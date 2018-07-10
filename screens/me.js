@@ -9,13 +9,7 @@
  // Sorry for the comments - feel free to delete in your version
 
 import React, {Component} from 'react';
-import {TouchableOpacity,
-        Image,
-        Platform,
-        StyleSheet,
-        Text,
-        View,
-        Button} from 'react-native';
+import {TouchableOpacity, Image, Platform, StyleSheet, Text, View, Button} from 'react-native';
 
 //<Me name="Hannah"/>
 //this.props.name
@@ -26,7 +20,7 @@ class MeMap extends Component {
         <Image style={styles.mapImage} source={require('../res/map.png')}/>
           <View style = {styles.overlay}>
             <Image style = {styles.meIcon} source = {require('../res/meavatar.png')} />
-            <Text style = {styles.avatarText}>{this.props.screenProps}</Text>
+            <Text style = {styles.avatarText}>Hannah Jury</Text>
             <TouchableOpacity style={styles.optionsView} onPress={()=>{alert("Location services are unavailable :)")}}>
               <Image style={styles.image} source={require('../res/icons/location.png')}/>
               <Text style={styles.locationText}>Your Location</Text>
@@ -41,13 +35,11 @@ export default class Me extends Component {
     super(props, context);
     this.state = {text: ""}
   }
-  // actually puts stuff on the app
+
   render() {
     return (
         <View style={styles.container}>
-
           <MeMap/>
-
           <View styles={styles.buttonList}>
             <TouchableOpacity style={styles.optionsView} onPress={()=>{alert("You have no plans today you loser :)")}}>
               <Image style={styles.image} source={require('../res/icons/Itin.png')}/>
@@ -64,7 +56,6 @@ export default class Me extends Component {
               <Text style={styles.buttonText}>Favourites</Text>
             </TouchableOpacity>
           </View>
-
         </View>
     );
   }
@@ -75,29 +66,25 @@ var styles = StyleSheet.create({
     backgroundColor: 'rgb(256, 256, 256)',
     flex:1,
   },
-
   buttonList: {
     flex:1,
   },
-
   list: {
-       justifyContent: 'center',
-       flexWrap: 'wrap',
-       flex:1,
-   },
-
-   mapImage:{
-     backgroundColor: 'rgb(256, 256, 256)',
-     flex: 2,
-     flexGrow:1,
-     resizeMode: 'contain',
-     position: 'absolute',
-     width: '100%',
-     height: '100%',
-     justifyContent: 'center',
-   },
-
-   optionsView: {
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    flex:1,
+  },
+  mapImage:{
+    backgroundColor: 'rgb(256, 256, 256)',
+    flex: 2,
+    flexGrow:1,
+    resizeMode: 'contain',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  optionsView: {
     backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 10,
@@ -108,16 +95,14 @@ var styles = StyleSheet.create({
     shadowOpacity: 0.35,
     width: '100%'
    },
-
    image: {
-     flex: 1,
-     justifyContent: 'center',
-     resizeMode:"contain",
-     flexDirection: 'row',
-     height: 30,
-     padding: 20,
+    flex: 1,
+    justifyContent: 'center',
+    resizeMode:"contain",
+    flexDirection: 'row',
+    height: 30,
+    padding: 20,
    },
-
    buttonText: {
     flex:3,
     fontWeight: 'bold',
@@ -126,15 +111,13 @@ var styles = StyleSheet.create({
     marginTop: 0,
     width: "100%",
   },
-
   avatarText: {
-   textAlign: 'center', // <-- the magic
-   fontWeight: 'bold',
-   color: 'rgb(116, 156, 237)',
-   fontSize: 28,
-   width: "100%",
+    textAlign: 'center', // <-- the magic
+    fontWeight: 'bold',
+    color: 'rgb(116, 156, 237)',
+    fontSize: 28,
+    width: "100%",
   },
-
   locationText: {
     flex:3,
     fontWeight: 'bold',
@@ -143,17 +126,15 @@ var styles = StyleSheet.create({
     marginTop: 0,
     width: "100%",
   },
-
-   overlay: {
-     backgroundColor: 'transparent'
-   },
-
-   meIcon: {
-     justifyContent: 'center',
-     height: 150,
-     alignItems: 'center',
-     resizeMode:"contain",
-     padding: 20,
-     width: "100%"
-   },
+  overlay: {
+    backgroundColor: 'transparent'
+  },
+  meIcon: {
+    justifyContent: 'center',
+    height: 150,
+    alignItems: 'center',
+    resizeMode:"contain",
+    padding: 20,
+    width: "100%"
+  },
 });
