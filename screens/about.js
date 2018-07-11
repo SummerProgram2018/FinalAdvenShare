@@ -13,9 +13,7 @@
    render () {
      return (
        <View style={styles.box}>
-
        <Image style={styles.iconImage} source={this.props.icon}/>
-
          <TextInput
            {...this.props} //Inherit any properties passed
            style={styles.text}
