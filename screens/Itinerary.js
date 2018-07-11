@@ -1,90 +1,144 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, {Component} from 'react';
+import {Platform,
+  StyleSheet,
+  AppRegistry,
+  Text,
+  View,
+  Image,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  ScrollView} from 'react-native';
+import moment from 'moment';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
- import React, {Component} from 'react';
- import {TouchableOpacity, Image, Platform, StyleSheet, Text, View, Button} from 'react-native';
-
- class weekDayDropDown extends Component{
-   render () {
-     return (
-       <View style={styles.prettyboxView}>
-        <View style={styles.dateView}>
-
-        <View style={styles.weekdayView}
-          <TextInput
-           {...this.props} //Inherit any properties passed
-           style={styles.text}
-           maxLength = {100}
-           multiline = {true}
-           numberOfLines = {8}
-           onChangeText = {this.props.onChangeFunction}
-           value = {this.props.textValue}
-         />
-         </View>
-         </View>
-       </View>
-     );
-   }
- }
-
-export default class Itinerary extends Component {
-  constructor (props, context) {
-    super (props, context);
-    // store the rel data
-    this.state = {
-      day1: '',
-      day2: '',
-      day3: '',
-      day4: '',
-      day5: '',
-      day6: '',
-      day7: '',
-    };
-    changeName = this.changeName.bind(this);
-    changeDob = this.changeDob.bind(this);
-    changeGender = this.changeGender.bind(this);
-    changeHomeCountry = this.changeHomeCountry.bind(this);
-    changeBio = this.changeBio.bind(this);
- }
-
- changeName = (name) => {
-   this.setState({name});
- }
- changeDob = (dob) => {
-   this.setState({dob});
- }
- changeGender = (gender) => {
-   this.setState({gender});
- }
- changeHomeCountry = (homeCountry) => {
-   this.setState({homeCountry});
- }
- changeBio = (bio) => {
-   this.setState({bio});
- }
-
+class AgendaDisplay extends Component {
   render() {
     return (
-        <View style={styles.container}>
-          <View style={styles.list}>
-            <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+      <View style={styles.dayBox}>
+        <Text style={styles.daytext}>
+          {this.props.firstItemInDay}
+        </Text>
+        <View style={styles.displayBox}>
+
+          <View style={styles.agendaTextView}>
+            <TextInput editable={false} value={this.props.time} style={styles.timetext}/>
+            <TextInput editable={false} value={this.props.title} style={styles.textInputTop}/>
+            <TextInput editable={false} value={this.props.description} style={styles.textInputBottom}/>
           </View>
+          <Image style={styles.image} source={this.props.iconName}/>
+        </View>
+      </View>
+    )
+  }
+}
+
+export default class Itinerary extends Component {
+  render() {
+
+    phoneIcon = require('../res/icons/sleep.png');
+    coffeeIcon = require('../res/icons/coffee.png');
+    friendIcon = require('../res/icons/sleep.png');
+    accomIcon = require('../res/icons/accom.png');
+    flightIcon = require('../res/icons/plane.png');
+    drinkIcon = require('../res/icons/sleep.png');
+    tourIcon = require('../res/icons/sleep.png');
+
+    return (
+      <View style={styles.container}>
+        <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+      <Agenda
+        items={
+          {'2018-07-01': [{time: '10:00', iconName: flightIcon, title: 'Flight', description: 'SA828 6hrs no stopover' },
+            {time: '15:00', iconName: coffeeIcon, title: 'Coffee Stop', description: 'Top 10 best coffee stops'}],
+           '2018-07-02': [],
+           '2018-07-03': [{time: '06:00', iconName: flightIcon, title: 'Flight', description: 'SA323 2hrs no stopover' },
+             {time: '12:00', iconName: coffeeIcon, title: 'Coffee Stop', description: 'Bullet Proof Coffee'},
+             {time: '16:00', iconName: friendIcon, title: 'Catch-up', description: 'Meet with Han from contiki'},
+             {time: '19:00', iconName: accomIcon, title: 'Check In', description: 'Check in to Hostel'}],
+           '2018-07-04': [],
+           '2018-07-05': [],
+           '2018-07-06': [{time: '09:00', iconName: tourIcon, title: 'Tour', description: 'Great wall of China Climb' },
+             {time: '16:00', iconName: phoneIcon, title: 'Call Home', description: 'Dont forget to call mum!'},
+             {time: '19:00', iconName: drinkIcon, title: 'Pub Crawl', description: 'Leo Hostel Pub Crawl'}],
+           '2018-07-07': [],
+           '2018-07-08': [],
+           '2018-07-09': [],
+           '2018-07-10': [],
+           '2018-07-11': [],
+           '2018-07-12': [],
+           '2018-07-13': [],
+           '2018-07-14': [],
+           '2018-07-15': [],
+           '2018-07-16': [],
+           '2018-07-17': [],
+           '2018-07-18': [],
+           '2018-07-19': [],
+           '2018-07-20': [],
+        }}
+        // callback that gets called when items for a certain month should be loaded (month became visible)
+        loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+        // callback that fires when the calendar is opened or closed
+        onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
+        // callback that gets called on day press
+        onDayPress={(day)=>{console.log('day pressed')}}
+        // callback that gets called when day changes while scrolling agenda list
+        onDayChange={(day)=>{console.log('day changed')}}
+        // initially selected day
+        selected={'2018-07-11'}
+        // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+        minDate={'2018-07-01'}
+        // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+        maxDate={'2018-12-20'}
+        // Max amount of months allowed to scroll to the past. Default = 50
+        pastScrollRange={10}
+        // Max amount of months allowed to scroll to the future. Default = 50
+        futureScrollRange={10}
+        // specify how each item should be rendered in agenda
+        renderItem={(item, firstItemInDay) =>
+          { return (<AgendaDisplay firstItemInDay={firstItemInDay} time={item.time} iconName={item.iconName}
+                title={item.title} description={item.description}/>);}}
+
+        // specify how each date should be rendered. day can be undefined if the item is not first in that day.
+      //  renderDay={(day, item) => {return (<AgendaDisplay day={day}/>);}}
+      //  renderItem={(item, firstItemInDay) => {return (<AgendaDisplay firstItemInDay={firstItemInDay}/>);}}
+        // specify how empty date content with no items should be rendered
+        renderEmptyDate={() => { return (<View />);}}
+        // specify how agenda knob should look like
+        renderKnob={() => {return (<View />);}}
+        // specify what should be rendered instead of ActivityIndicator
+        renderEmptyData = {() => {return (<View />);}}
+        // specify your item comparison function for increased performance
+        rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
+        // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
+        onRefresh={() => console.log('refreshing...')}
+        // Set this true while waiting for new data from a refresh
+        refreshing={false}
+        // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
+        refreshControl={null}
+        time_proportional={true}
+        // agenda theme
+        theme={{
+        }}
+        // agenda container style
+        style={{}}
+        />
         </View>
     );
   }
 }
 
+AppRegistry.registerComponent('Itinerary', () => Itinerary);
+
 var styles = StyleSheet.create({
   container:{
     flex:1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  },
+  list: {
     justifyContent: 'center',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    height: 100,
   },
   backgroundImage:{
     backgroundColor: 'transparent',
@@ -95,38 +149,46 @@ var styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
   },
-  list: {
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    flex:1,
-    flexDirection: 'row',
-    height: 100,
+  dayBox: {
+    backgroundColor: 'rgb(248, 248, 248)',
   },
-  prettyBoxView: {
-    backgroundColor: 'rgb(116, 156, 237)',
-    borderRadius: 20,
-    padding: 10,
-    marginBottom: 20,
+  daytext: {
+    fontWeight: 'bold',
+    color: 'grey',
+    fontSize: 20,
+  },
+  displayBox: {
+    padding: 5,
+    height: 155,
+    borderRadius: 9,
     flexDirection: 'row',
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 10,
-    shadowOpacity: 0.35,
-    width: '90%'
-   },
-   dateView: {
-     flex: 1,
-     width: 60,
-     resizeMode: 'contain',
-   },
-   weekdayView:  {
-     width: '100%',
-   },
-   textStyle: {
-     flex:4,
-     fontWeight: 'bold',
-     color: 'rgb(256, 256, 256)',
-     fontSize: 28,
-     marginTop: 0,
-     width: "100%",
-   }
+    backgroundColor: 'rgb(256, 256, 256)',
+    margin: 10,
+    alignItems:'center'
+  },
+  agendaTextView: {
+    backgroundColor: 'rgb(256, 256, 256)',
+    flex: 1
+  },
+  timetext: {
+    flex:1,
+    fontWeight: 'bold',
+    color: 'rgb(32, 32, 32)',
+    fontSize: 20,
+  },
+  image: {
+   justifyContent: 'center',
+   resizeMode:"contain",
+   height: 70,
+  },
+  textInputTop: {
+    flex: 1,
+    fontSize: 20,
+    color: 'rgb(80, 80, 80)'
+  },
+  textInputBottom: {
+    flex: 1,
+    fontSize: 15,
+    color: 'rgb(128, 128, 128)'
+  },
 });

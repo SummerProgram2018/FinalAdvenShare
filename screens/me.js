@@ -21,8 +21,8 @@ class MeMap extends Component {
           <View style = {styles.overlay}>
             <Image style = {styles.meIcon} source = {require('../res/meavatar.png')} />
             <Text style = {styles.avatarText}>Hannah Jury</Text>
-            <TouchableOpacity style={styles.optionsView} onPress={()=>{alert("Location services are unavailable :)")}}>
-              <Image style={styles.image} source={require('../res/icons/location.png')}/>
+            <TouchableOpacity style={styles.locationView} onPress={()=>{alert("Location services are unavailable :)")}}>
+              <Image style={styles.locationimage} source={require('../res/icons/location.png')}/>
               <Text style={styles.locationText}>Your Location</Text>
             </TouchableOpacity>
           </View>
@@ -76,9 +76,7 @@ var styles = StyleSheet.create({
   },
   mapImage:{
     backgroundColor: 'rgb(256, 256, 256)',
-    flex: 2,
     flexGrow:1,
-    resizeMode: 'contain',
     position: 'absolute',
     width: '100%',
     height: '100%',
@@ -86,15 +84,15 @@ var styles = StyleSheet.create({
   },
   optionsView: {
     backgroundColor: 'transparent',
-    borderRadius: 20,
     padding: 10,
     marginBottom: 20,
     flexDirection: 'row',
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 10,
-    shadowOpacity: 0.35,
     width: '100%'
    },
+   locationView: {
+     backgroundColor: 'transparent',
+     flexDirection: 'row',
+    },
    image: {
     flex: 1,
     justifyContent: 'center',
@@ -103,13 +101,17 @@ var styles = StyleSheet.create({
     height: 30,
     padding: 20,
    },
+   locationimage: {
+    flex:2,
+    resizeMode:"contain",
+    height: 20,
+    right:0
+   },
    buttonText: {
     flex:3,
     fontWeight: 'bold',
     color: 'rgb(116, 156, 237)',
     fontSize: 28,
-    marginTop: 0,
-    width: "100%",
   },
   avatarText: {
     textAlign: 'center', // <-- the magic
@@ -120,21 +122,18 @@ var styles = StyleSheet.create({
   },
   locationText: {
     flex:3,
-    fontWeight: 'bold',
+    backgroundColor: 'transparent',
     color: 'rgb(116, 156, 237)',
     fontSize: 20,
-    marginTop: 0,
     width: "100%",
   },
   overlay: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    alignItems: 'center',
   },
   meIcon: {
-    justifyContent: 'center',
     height: 150,
-    alignItems: 'center',
     resizeMode:"contain",
     padding: 20,
-    width: "100%"
   },
 });
