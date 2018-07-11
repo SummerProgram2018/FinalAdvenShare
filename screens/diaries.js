@@ -51,7 +51,7 @@ export default class Diaries extends Component {
       alert("Enter a diary name");
     } else {
       // Create a new diary in fireBase
-      this.props.navigation.navigate('Diary', {diary: this.state.newDiaryName})  
+      this.props.navigation.navigate('Diary', {diary: this.state.newDiaryName})
     }
   }
 
