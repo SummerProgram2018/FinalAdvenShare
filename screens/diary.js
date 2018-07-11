@@ -139,17 +139,17 @@ export default class Diary extends Component {
   }
 
   addDiary() {
-    /*var dates = this.state.entries.map(obj => {
-      Object.values(obj)[0];
+    var dates = this.state.entries.map(obj => {
+      return(obj.date)
     })
+    var entry = null;
     for (var i = 0; i < this.state.entries.length; i++) {
       if (JSON.stringify(this.state.currentDate) == JSON.stringify(dates[i])) {
-        this.props.navigation.navigate('DiaryEntry', {date: this.state.currentDate,
-                                                      entry: this.state.entries[i].entry})
+        entry = this.state.entries[i].entry;
       }
     }
-    // Create a new entry in fireBase
-    // Open a window with a new entry with the date and a null component */
+    this.props.navigation.navigate('DiaryEntry', {date: this.state.currentDate,
+                                                  entry: entry})
   }
 
   render () {
@@ -173,7 +173,7 @@ export default class Diary extends Component {
             }
           </ScrollView>
         }
-        <TouchableOpacity style = {styles.addButtonBox} onPress = {this.addDiary}>
+        <TouchableOpacity style = {styles.addButtonBox} onPress = {addDiary}>
           <Image style={styles.addButton} source={require('../res/icons/plus.png')}/>
         </TouchableOpacity>
       </View>
