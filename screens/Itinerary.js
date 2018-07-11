@@ -15,7 +15,7 @@
        <View style={styles.prettyboxView}>
         <View style={styles.dateView}>
 
-        <View style={styles.weekdayView}
+        <View style={styles.weekdayView}>
           <TextInput
            {...this.props} //Inherit any properties passed
            style={styles.text}
