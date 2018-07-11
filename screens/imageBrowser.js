@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, CameraRoll} from 'react-native';
+import {Platform, StyleSheet, Modal, Text, View, Button, Image, CameraRoll, Dimensions, ScrollView} from 'react-native';
+
+const { width } = Dimensions.get('window')
 
 export default class ImageBrowser extends Component {
   constructor(props, context) {
@@ -7,34 +9,58 @@ export default class ImageBrowser extends Component {
     this.state = {
       modalVisible: false,
       photos: [],
-      index: null
+      index: null,
+      loaded: false,
     }
-    getPhotos = this.getPhotos.bind(this)
-    componentDidMount = this.componentDidMount.bind(this)
+    toggleModal = this.toggleModal.bind(this);
   }
 
-  getPhotos = () => {
-    CameraRoll.getPhotos({
-      first: 4,
-      assetType: 'All' /*Change this line if we want only photos (currently gets video too)*/
-    })
-    .then(r => this.setState({ photos: r.edges }))
+  setIndex = (index) => {
+    if (index === this.state.index) {
+      index = null
+    }
+    this.setState({ index })
+  }
+
+  toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
   }
 
   componentDidMount() {
-    this.getPhotos();
+    CameraRoll.getPhotos({
+      first: 20,
+      assetType: 'All' /*Change this line if we want only photos (currently gets video too)*/
+    })
+    .then((r) => {
+      this.setState({ photos: r.edges, modalVisible: true })
+    })
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Image
-          style={styles.photos}
-          source={this.state.photos}
-        />
-        <Text>Image Browser</Text>
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => console.log('closed')}
+        >
+          <Button
+            title="Close"
+            onPress={this.toggleModal}
+          />
+          <ScrollView style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+            {this.state.photos.map((p, i) => {
+              return (
+                <Image style={{width: width/3, height:width/3}}
+                  source={{uri: p.node.image.uri}}
+                />
+              )
+            })}
+          </ScrollView>
+        </Modal>
       </View>
-    );
+    )
   }
 }
 
