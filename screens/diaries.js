@@ -49,9 +49,10 @@ export default class Diaries extends Component {
   addDiary() {
     if (this.state.newDiaryName == "") {
       alert("Enter a diary name");
+    } else {
+      // Create a new diary in fireBase
+      this.props.navigation.navigate('Diary', {diary: this.state.newDiaryName})  
     }
-    // Create a new diary in fireBase
-    // Open a window with a new diary with this.state.newDiaryName
   }
 
   render () {
@@ -75,13 +76,13 @@ export default class Diaries extends Component {
         }
         <View style={{width:'100%', height: 60, flexDirection: 'row'}}>
           <View style={{width: 60, height: 60, alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableOpacity style = {styles.addButton2} onPress = {this.addDiary}>
+            <TouchableOpacity style = {styles.addButton2} onPress = {addDiary}>
               <Image style={styles.addButton2} source = {require('../res/icons/plus.png')}/>
             </TouchableOpacity>
           </View>
           <TextInput
             placeholder="New Diary Name"
-            onChangeText={(newDiaryName) => this.setState(newDiaryName)}
+            onChangeText={(text) => this.setState({newDiaryName: text})}
             value={this.state.newDiaryName}
             style={{flex: 1}}
           />
