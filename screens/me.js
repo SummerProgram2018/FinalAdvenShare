@@ -41,7 +41,7 @@ export default class Me extends Component {
         <View style={styles.container}>
           <MeMap/>
           <View styles={styles.buttonList}>
-            <TouchableOpacity style={styles.optionsView} onPress={()=>{alert("You have no plans today you loser :)")}}>
+            <TouchableOpacity style={styles.optionsView} onPress={()=>{this.props.navigation.navigate('Itinerary')}}>
               <Image style={styles.image} source={require('../res/icons/Itin.png')}/>
               <Text style={styles.buttonText}>My Itinerary</Text>
             </TouchableOpacity>
@@ -51,7 +51,7 @@ export default class Me extends Component {
               <Text style={styles.buttonText}>About</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.optionsView} onPress={()=>{alert("You have no friends :)")}}>
+            <TouchableOpacity style={styles.optionsView} onPress={()=>{this.props.navigation.navigate('Favourites')}}>
               <Image style={styles.image} source={require('../res/icons/star.png')}/>
               <Text style={styles.buttonText}>Favourites</Text>
             </TouchableOpacity>
