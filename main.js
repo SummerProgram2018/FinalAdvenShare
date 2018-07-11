@@ -8,6 +8,8 @@ import Chat from "./screens/chat";
 import Plan from "./screens/plan";
 import ImageBrowser from "./screens/imageBrowser";
 import About from "./screens/about";
+import Itinerary from "./screens/Itinerary";
+import Favourites from "./screens/favourites";
 import firebase from 'react-native-firebase';
 
 const HomeTab = createStackNavigator(
@@ -31,6 +33,12 @@ const MeTab = createStackNavigator(
     },
     About: {
       screen: About
+    },
+    Itinerary: {
+      screen: Itinerary
+    },
+    Favourites: {
+      screen: Favourites
     }
   }
 )
