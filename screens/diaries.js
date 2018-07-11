@@ -47,6 +47,9 @@ export default class Diaries extends Component {
   }
 
   addDiary() {
+    if (this.state.newDiaryName == "") {
+      alert("Enter a diary name");
+    }
     // Create a new diary in fireBase
     // Open a window with a new diary with this.state.newDiaryName
   }

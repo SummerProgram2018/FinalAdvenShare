@@ -3,6 +3,7 @@ import {Platform, StyleSheet, Text, View, Button, Image, CameraRoll} from 'react
 import {TabBarBottom, createStackNavigator, TabNavigator} from 'react-navigation';
 import Home from "./screens/home";
 import Me from "./screens/me";
+import Diaries from "./screens/diaries";
 import Diary from "./screens/diary";
 import Chat from "./screens/chat";
 import Plan from "./screens/plan";
@@ -45,15 +46,21 @@ const MeTab = createStackNavigator(
 
 const DiaryTab = createStackNavigator(
   {
-    DiaryTab: {
-      screen: Diary,
+    DiariesTab: {
+      screen: Diaries,
       navigationOptions: {
         header: null
       }
     },
+    Diary: {
+      screen: Diary
+    },
     ImageBrowser: {
       screen: ImageBrowser
     }
+  },
+  {
+    initialRouteName: "DiariesTab",
   }
 )
 

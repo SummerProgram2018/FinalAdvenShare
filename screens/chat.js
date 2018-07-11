@@ -24,7 +24,7 @@ class ChatBox extends Component {
           <TextInput editable={false} value="Top" style={styles.textInputTop}/>
           <TextInput editable={false} value="Bottom" style={styles.textInputBottom}/>
         </View>
-      </View> 
+      </View>
     )
   }
 }
@@ -41,7 +41,7 @@ export default class Chat extends Component {
     return (
         <View style={styles.container}>
           <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
-          <ScrollView style={{flex: 1, backgroundColor: 'blue'}}>
+          <ScrollView style={{flex: 1}}>
               <ChatBox/>
               <ChatBox/>
               <ChatBox/>
