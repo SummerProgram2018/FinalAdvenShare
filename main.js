@@ -12,6 +12,7 @@ import About from "./screens/about";
 import Itinerary from "./screens/Itinerary";
 import Favourites from "./screens/favourites";
 import firebase from 'react-native-firebase';
+import DiaryEntry from "./screens/editDiary";
 
 const LogoutHeader = props => {
   signOutUser = async () => {
@@ -86,9 +87,12 @@ const DiaryTab = createStackNavigator(
     Diary: {
       screen: Diary
     },
+    DiaryEntry: {
+      screen: DiaryEntry
+    },
     ImageBrowser: {
       screen: ImageBrowser
-    }
+    },
   },
   {
     initialRouteName: "DiariesTab",
