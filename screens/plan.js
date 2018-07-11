@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Button} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Button, Alert} from 'react-native';
 import firebase from 'react-native-firebase';
 
 
@@ -24,26 +24,69 @@ export default class Plan extends Component {
     super (props, context);
     firebase.initializeApp(config);
     this.state = {
-      database: firebase.database()
+      database: firebase.database(),
+      buttonLabel: 'Send data',
+      uid: firebase.auth().currentUser.uid
     };
-     onPressSetupUId = this.onPressSetupUId.bind(this)
+     buttonPress = this.buttonPress.bind(this);
+     setupNewBlankUserinFirebase = this.setupNewBlankUserinFirebase.bind(this);
+     addNewDiaryEntry = this.addNewDiaryEntry.bind(this);
+     readBasicInfo = this.readBasicInfo.bind(this);
+     readDiaryEntry = this.readDiaryEntry.bind(this);
   }
 
-  onPressSetupUId(uid) {
-    this.state.database.ref('users/').child(uid + '/').child('basicInfo/').set({
-      firstName: '',
-      surName: '',
-      email: '',
+  setupNewBlankUserinFirebase() {
+    this.state.database.ref('users/' + this.state.uid + '/basicInfo/').set({
+      firstName: 'Samuel',
+      surName: 'Eadie',
+      email: 'samueleadie@gmail.com',
       birthDay: 27,
-      birthMonth: 1,
-      birthYear: 2000,
-      homeCountry: '',
-      bio: 'Tell people a little about yourself...'
-    });
-    this.state.database.ref('users/').child(uid + '/').child('diaries/').set({
-      China: ['gssgdf', 'gfdsgdsf']
+      birthMonth: 4,
+      birthYear: 1998,
+      homeCountry: 'Australia',
+      bio: "I'm a cool dude"
     });
   }
+
+  addNewDiaryEntry(diary, newCaption, newTimeDate, newImages) {
+    this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/').push({
+      caption: newCaption,
+      timeDate: newTimeDate,
+      images: newImages
+    });
+  }
+
+  readBasicInfo() {
+    this.state.database.ref('users/' + this.state.uid + '/basicInfo').once('value').then((snapshot) => {
+      alert(snapshot.child("bio").val().toString())
+
+      /*snapshot.forEach((child) => {
+        alert(child.getKey() + ": " + child.val().toString())
+      });
+      Object.keys(snapshot).forEach(function (key, index) {
+        alert(key.toString() + ": " + index.val().toString())
+      });*/
+    })
+  }
+
+  readDiaryEntry() {
+    this.state.database.ref('users/' + this.state.uid + '/diaries').once('value').then((snapshot) => {
+      snapshot.forEach((diary) => {
+        diary.forEach((diaryEntry) => {
+          alert(diaryEntry.child("caption").val().toString())
+        });
+      });
+    })
+  }
+
+  buttonPress() {
+    /*setupNewBlankUserinFirebase(this.state.uid);
+    addNewDiaryEntry("China", "A different yet still nice caption for this diary entry", "2018-07-06T16:35:43.511Z", ["lruegami", "iMaGeUrL2"]);*/
+    readBasicInfo();
+    /*readDiaryEntry();*/
+
+  }
+
 
     /*
     {
@@ -118,10 +161,10 @@ export default class Plan extends Component {
         </View>
         <Text>Plan</Text>
         <Button
-          title = "Send Data"
+          title = {this.state.buttonLabel}
           color = "#841584"
-          onPress={onPressSetupUId('gh435n43kj543543n6432vh')}
-          />
+          onPress={buttonPress}
+        />
       </View>
     );
   }
