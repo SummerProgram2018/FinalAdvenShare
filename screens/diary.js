@@ -56,7 +56,37 @@ class EntryBar extends Component {
   }
 
   edit() {
-    alert('Lets go to the edit')
+    this.props.navigation.navigate('DiaryEntry', {date: this.props.date,
+                                                  entry: this.props.entry})
+  }
+
+  monthIndexToName(index) {
+    switch(index) {
+      case 1:
+        return "Jan"
+      case 2:
+        return "Feb"
+      case 3:
+        return "Mar"
+      case 4:
+        return "Apr"
+      case 5:
+        return "May"
+      case 6:
+        return "Jun"
+      case 7:
+        return "Jul"
+      case 8:
+        return "Aug"
+      case 9:
+        return "Sep"
+      case 10:
+        return "Oct"
+      case 11:
+        return "Nov"
+      case 12:
+        return "Dec"
+    }
   }
 
   render() {
@@ -68,7 +98,7 @@ class EntryBar extends Component {
     return (
       <Animated.View style={[styles.entryBox,{height: this.state.animation}]}>
         <View style={styles.dateIcon}>
-          <Text style={{fontSize: 16, fontWeight: 'bold', height: 20}}>{this.props.date.month}</Text>
+          <Text style={{fontSize: 16, fontWeight: 'bold', height: 20}}>{this.monthIndexToName(this.props.date.month)}</Text>
           <Text style={{fontSize: 36, fontWeight: 'bold', height: 40}}>{this.props.date.day}</Text>
           <Text style={{fontSize: 16, fontWeight: 'bold', height: 20}}>{this.props.date.year}</Text>
         </View>
@@ -91,24 +121,35 @@ export default class Diary extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      entries: [ {date: {day: 8, month: "July", year: 2018}, text: insertText},
-                 {date: {day: 9, month: "July", year: 2018}, text: "Fucking ripper of a longer message"},
-                 {date: {day: 10, month: "July", year: 2018}, text: "Fucking rip of a long message"} ]
+      entries: [ {date: {day: 8, month: 7, year: 2018}, entry: insertText},
+                 {date: {day: 9, month: 7, year: 2018}, entry: "Fucking ripper of a longer message"},
+                 {date: {day: 10, month: 7, year: 2018}, entry: "Fucking rip of a long message"} ],
+      currentDate: {day: null, month: null, year: null}
     }
     addDiary = this.addDiary.bind(this);
   }
 
-  onComponentDidMount() {
+  componentDidMount() {
     // Do some shit to get the entries from firebase using
     // this.props.navigation.state.diary
+    var day = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+    this.setState({currentDate: {day: day, month: month, year: year}})
   }
 
   addDiary() {
-    if (this.state.newDiaryName == "") {
-      alert("Enter a diary name");
+    /*var dates = this.state.entries.map(obj => {
+      Object.values(obj)[0];
+    })
+    for (var i = 0; i < this.state.entries.length; i++) {
+      if (JSON.stringify(this.state.currentDate) == JSON.stringify(dates[i])) {
+        this.props.navigation.navigate('DiaryEntry', {date: this.state.currentDate,
+                                                      entry: this.state.entries[i].entry})
+      }
     }
     // Create a new entry in fireBase
-    // Open a window with a new entry with the date and a null component
+    // Open a window with a new entry with the date and a null component */
   }
 
   render () {
@@ -126,7 +167,7 @@ export default class Diary extends Component {
                           date={entry.date}
                           navigation={this.props.navigation}
                         >
-                          <Text>{entry.text}</Text>
+                          <Text>{entry.entry}</Text>
                         </EntryBar>)
               })
             }
