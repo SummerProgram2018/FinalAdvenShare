@@ -46,7 +46,6 @@ export default class Chat extends Component {
               <ChatBox/>
               <ChatBox/>
           </ScrollView>
-          <Button title="logout" onPress={() => this.signOutUser()} />
         </View>
     );
   }

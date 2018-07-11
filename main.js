@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button, Image, CameraRoll} from 'react-native';
-import {TabBarBottom, createStackNavigator, TabNavigator} from 'react-navigation';
+import {Platform, StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
+import {TabBarBottom, createStackNavigator, TabNavigator, Header} from 'react-navigation';
 import Home from "./screens/home";
 import Me from "./screens/me";
 import Diaries from "./screens/diaries";
@@ -12,6 +12,27 @@ import About from "./screens/about";
 import Itinerary from "./screens/Itinerary";
 import Favourites from "./screens/favourites";
 import firebase from 'react-native-firebase';
+
+const LogoutHeader = props => {
+  signOutUser = async () => {
+      try {
+          await firebase.auth().signOut();
+      } catch (e) {
+          console.log(e);
+      }
+  }
+  return (
+    <View style={{width: '100%', backgroundColor: 'white'}}>
+      <Header {...props}/>
+      <TouchableOpacity
+        style={{right: 10, top: 10, position: 'absolute'}}
+        onPress={() => this.signOutUser()}
+      >
+        <Text style={{fontSize:25, color:'rgb(116, 156, 237)'}}>Logout</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 const HomeTab = createStackNavigator(
   {
@@ -33,13 +54,23 @@ const MeTab = createStackNavigator(
       }
     },
     About: {
-      screen: About
+      screen: About,
+      navigationOptions: {
+        header: props => <LogoutHeader {...props}/>
+      }
     },
     Itinerary: {
       screen: Itinerary
     },
     Favourites: {
       screen: Favourites
+    }
+  },
+  {
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: "transparent"
+      },
     }
   }
 )
