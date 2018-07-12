@@ -73,7 +73,7 @@ export default class DiaryEntry extends Component<Props> {
   constructor (props, context) {
       super (props, context);
       this.state = {
-        text: 'Enter your diary text here',
+        text: 'Enter your weird Diary text here',
         savedText: '',
         date: '',
         firstImage: false,
@@ -83,11 +83,15 @@ export default class DiaryEntry extends Component<Props> {
         photos: [],
         index: null,
         loaded: false,
+        latitude: null,
+        longitude: null,
+        city: null,
 
       };
       onPressLearnMore = this.onPressLearnMore.bind(this)
       sendFireBaseEntry = this.sendFireBaseEntry.bind(this)
       toggleModal = this.toggleModal.bind(this);
+      getCurrentLocation = this.getCurrentLocation.bind(this)
     }
 
     sendFireBaseEntry() {
@@ -121,6 +125,19 @@ export default class DiaryEntry extends Component<Props> {
       this.setState({ modalVisible: !this.state.modalVisible });
     }
 
+    getCurrentLocation() {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+    },
+  );
+  //    this.setState({city: navigator.geolocation.nearestCity(this.state.latitude, this.state.longitude)});
+      alert("You are at" + " latitude " + this.state.latitude + " longitude " + this.state.longitude)
+}
+
     componentDidMount() {
       CameraRoll.getPhotos({
         first: 20,
@@ -129,6 +146,7 @@ export default class DiaryEntry extends Component<Props> {
       .then((r) => {
         this.setState({ photos: r.edges, modalVisible: true })
       })
+/*      Geolocation.setRNConfiguration(config);*/
     }
 
     render () {
@@ -149,6 +167,10 @@ export default class DiaryEntry extends Component<Props> {
             color = "#841584"
             onPress={onPressLearnMore}
             />
+          <Button
+            title = "Geolocate me mfer"
+            onPress = {getCurrentLocation()}
+            />
             <TouchableOpacity onPress={()=>this.setState({addingImage: true})}>
               <Text>HI</Text>
             </TouchableOpacity>
@@ -167,6 +189,10 @@ export default class DiaryEntry extends Component<Props> {
               <Button
                 title="Close"
                 onPress={this.toggleModal}
+              />
+              <Button
+                title = "Secret Location Button"
+                onPress = {getCurrentLocation()}
               />
               <ScrollView style={{flexWrap: 'wrap', flexDirection: 'row'}}>
                 {this.state.photos.map((p, i) => {
