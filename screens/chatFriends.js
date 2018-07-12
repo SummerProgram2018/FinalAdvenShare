@@ -9,12 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, Button, ScrollView, TextInput} from 'react-native';
 import firebase from 'react-native-firebase';
-import {TabBarBottom, createStackNavigator, TabNavigator, Header} from 'react-navigation';
-import ChatFriends from './chatFriends'
-import ChatDiscover from './chatDiscover'
 
-
-export class ChatBox extends Component {
+class ChatBox extends Component {
   render() {
     return (
       <View style={styles.chatBox}>
@@ -32,44 +28,16 @@ export class ChatBox extends Component {
   }
 }
 
-const FriendsTab = createStackNavigator(
-  {
-    Friends: {
-      screen: ChatFriends,
-      navigationOptions: {
-        header: null
-      }
-    }
-  }
-)
-
-const DiscoverTab = createStackNavigator(
-  {
-    Discover: {
-      screen: ChatDiscover,
-      navigationOptions: {
-        header: null
-      }
-    }
-  }
-)
-
-
-const ChatNav = TabNavigator(
-    {
-      Chat: FriendsTab,
-      Discover: DiscoverTab,
-    },
-    {
-      initialRouteName: "Chat",
-      tabBarPosition: 'top'
-    }
-)
-
-export default class Chat extends Component {
+export default class ChatFriends extends Component {
   render() {
     return (
-      <ChatNav/>
+        <View style={styles.container}>
+          <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+          <ScrollView style={{flex: 1}}>
+              <ChatBox/>
+              <ChatBox/>
+          </ScrollView>
+        </View>
     );
   }
 }
