@@ -84,9 +84,14 @@ export default class Diaries extends Component {
       <View style={styles.container}>
         <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
         {this.state.diaries.length == 0 ?
-          <View style={{flex: 1, alignContent: 'center', justifyContent:'center'}}>
-            <Text style={{fontSize:40}}> Make some memories! </Text>
-          </View>
+          <TouchableOpacity
+            style={styles.chatBox2}
+            onPress={() => this.props.navigation.navigate('Diary', {diary: "Skip Loading Diaries"})}
+          >
+            <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
+              <Text style={{fontSize:40, justifyText:'center'}}> Make some memories! </Text>
+            </View>
+          </TouchableOpacity>
         :
           <ScrollView style={{flex: 1}}>
             {this.state.diaries.map((name) => {
@@ -203,6 +208,14 @@ var styles = StyleSheet.create({
      height: 100,
      flexDirection: 'row',
      backgroundColor: 'red',
+     margin: 10,
+     alignItems:'center'
+   },
+   chatBox2: {
+     padding: 5,
+     height: 100,
+     flexDirection: 'row',
+     backgroundColor: 'transparent',
      margin: 10,
      alignItems:'center'
    },
