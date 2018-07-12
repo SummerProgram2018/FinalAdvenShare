@@ -173,6 +173,13 @@ const RootTab = TabNavigator (
   }
 )
 
+var config = {
+    apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
+    authDomain: "advenshare123.firebaseapp.com",
+    databaseURL: "https://advenshare123.firebaseio.com/",
+    storageBucket: "advenshare123.appspot.com"
+};
+
 export default class App extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -182,6 +189,7 @@ export default class App extends React.Component {
   componentDidMount() {
     const { currentUser } = firebase.auth()
     this.setState({ currentUser: currentUser._user.email })
+    firebase.initializeApp(config);
   }
 
   render() {

@@ -16,7 +16,12 @@ import firebase from 'react-native-firebase';
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {keyboard: false}
+    this.state = {
+      keyboard: false,
+      database: firebase.database(),
+      storage: firebase.storage(),
+      uid: firebase.auth().currentUser.uid
+    }
     pressLogin = this.pressLogin.bind(this);
   }
 
@@ -48,7 +53,7 @@ export default class Login extends Component {
         alert(error.message)
       })
   }
-  
+
   render() {
     return (
         <View style={styles.container}>
@@ -66,7 +71,7 @@ export default class Login extends Component {
           {this.state.keyboard ? <View/> :
             <View style = {styles.placeHolder}>
               <Image style={styles.backgroundImage} source={require('../res/CloudLogoLogin.png')}/>
-              <Button 
+              <Button
                 title="Need an account? Register"
                 onPress={() => this.props.navigation.navigate('Register')}
               />

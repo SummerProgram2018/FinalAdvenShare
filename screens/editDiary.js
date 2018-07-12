@@ -262,7 +262,7 @@ export default class DiaryEntry extends Component<Props> {
   constructor (props, context) {
       super (props, context);
       this.state = {
-        text: 'Enter your diary text here',
+        text: 'Enter your weird Diary text here',
         savedText: '',
         date: '',
         firstImage: false,
@@ -313,6 +313,7 @@ export default class DiaryEntry extends Component<Props> {
       .then((r) => {
         this.setState({photos: r.edges})
       })
+/*      Geolocation.setRNConfiguration(config);*/
     }
 
     dateToText(date) {
@@ -380,6 +381,10 @@ export default class DiaryEntry extends Component<Props> {
               <Button
                 title="Close"
                 onPress={this.toggleModal}
+              />
+              <Button
+                title = "Secret Location Button"
+                onPress = {getCurrentLocation()}
               />
               <ScrollView style={{flexWrap: 'wrap', flexDirection: 'row'}}>
                 {this.state.photos.map((p, i) => {

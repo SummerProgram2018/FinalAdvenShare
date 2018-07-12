@@ -11,6 +11,14 @@ import {Platform, StyleSheet, Text, View, Image, TextInput, Button, TouchableOpa
 import entryInfo from '../components/diarycomp';
 import NavigationButton from '../components/navigation';
 
+import firebase from 'react-native-firebase';
+var config = {
+    apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
+    authDomain: "advenshare123.firebaseapp.com",
+    databaseURL: "https://advenshare123.firebaseio.com/",
+    storageBucket: "advenshare123.appspot.com"
+};
+
 // Asks for name and for the navigation information to be passed to it
 class DiaryBar extends Component {
   render() {
@@ -35,15 +43,26 @@ class DiaryBar extends Component {
 export default class Diaries extends Component {
   constructor (props) {
     super(props);
+    firebase.initializeApp(config);
     this.state = {
-      diaries: ["Mexico", "Indonesia", "Korea", "Yolo", "Adrian", "DANNY BOI"],
+      diaries: [],
+      database: firebase.database(),
+      storage: firebase.storage(),
+      uid: firebase.auth().currentUser.uid,
       newDiaryName: ""
     }
     addDiary = this.addDiary.bind(this);
   }
 
-  onComponentDidMount() {
-    // Do some shit to get the diaries from firebase
+  componentDidMount() {
+    this.state.database.ref('users/' + this.state.uid + '/diaries').once('value').then((snapshot) => {
+      snapshot.forEach((diary) => {
+        var diaries = this.state.diaries;
+        var diaryName = (diary.ref.toString().split('/')[6]).toString();
+        diaries.push(diaryName)
+        this.setState({diaries: diaries})
+      });
+    })
   }
 
   addDiary() {
@@ -51,6 +70,11 @@ export default class Diaries extends Component {
       alert("Enter a diary name");
     } else {
       // Create a new diary in fireBase
+      this.state.database.ref('users/' + this.state.uid + '/diaries/' + this.state.newDiaryName + '/').push({
+        caption: "",
+        timeDate: "",
+        images: []
+      });
       this.props.navigation.navigate('Diary', {diary: this.state.newDiaryName})
     }
   }
