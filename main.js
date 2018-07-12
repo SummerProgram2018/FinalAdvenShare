@@ -12,6 +12,13 @@ import Itinerary from "./screens/Itinerary";
 import Favourites from "./screens/favourites";
 import firebase from 'react-native-firebase';
 import EditDiary from "./screens/editDiary";
+import Weather from "./screens/weather"
+import Accommodation from "./screens/accommodation"
+import Tours from "./screens/tours"
+import Currency from "./screens/currency"
+import ChangeCity from "./screens/changeCity"
+import Transport from "./screens/transport"
+import AddTour from "./screens/addTour"
 
 const LogoutHeader = props => {
   signOutUser = async () => {
@@ -64,6 +71,9 @@ const MeTab = createStackNavigator(
     },
     Favourites: {
       screen: Favourites
+    },
+    AddTour: {
+      screen: AddTour
     }
   },
   {
@@ -113,6 +123,24 @@ const PlanTab = createStackNavigator(
       navigationOptions: {
         header: null
       }
+    },
+    Accommodation: {
+      screen: Accommodation,
+    },
+    Weather: {
+      screen: Weather,
+    },
+    ChangeCity: {
+      screen: ChangeCity,
+    },
+    Transport: {
+      screen: Transport,
+    },
+    Tours: {
+      screen: Tours,
+    },
+    Currency: {
+      screen: Currency,
     }
   }
 )
