@@ -13,10 +13,9 @@
  import React, {Component} from 'react';
  import {Platform, StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, ScrollView} from 'react-native';
  import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
- //import { Fumi } from 'react-native-textinput-effects';
  import {Fumi} from 'react-native-textinput-effects';
-
  import firebase from 'react-native-firebase';
+
  var config = {
      apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
      authDomain: "advenshare123.firebaseapp.com",
@@ -102,32 +101,6 @@
     });
   }
 
-   render () {
-     nameIcon = require('../res/meavatar.png');
-     dobIcon = require('../res/icons/gender.png');
-     genderIcon = require('../res/icons/gender.png');
-     homeCountryIcon = require('../res/icons/location.png');
-     bioIcon = require('../res/icons/gender.png');
-
-  submitDetails = () => {
-    this.state.database.ref('users/' + this.state.uid + '/basicInfo').update({
-      name: this.state.name,
-      dob: this.state.dob,
-      gender: this.state.gender,
-      homeCountry: this.state.homeCountry,
-      bio: this.state.bio
-    });
-  }
-
-  componentDidMount = () => {
-    this.state.database.ref('users/' + this.state.uid + '/basicInfo').once('value').then((snapshot) => {
-      this.setState({name: snapshot.child("name").val().toString()}),
-      this.setState({dob: snapshot.child("dob").val().toString()}),
-      this.setState({gender: snapshot.child("gender").val().toString()}),
-      this.setState({homeCountry: snapshot.child("homeCountry").val().toString()}),
-      this.setState({bio: snapshot.child("bio").val().toString()})
-    });
-  }
   render () {
 
     return (
