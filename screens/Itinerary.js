@@ -1,3 +1,14 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow
+ * PLEASE ADD:
+ * yarn add moment
+ * yarn add react-native-calendars
+ */
+
 import React, {Component} from 'react';
 import {Platform,
   StyleSheet,
@@ -20,7 +31,6 @@ class AgendaDisplay extends Component {
           {this.props.firstItemInDay}
         </Text>
         <View style={styles.displayBox}>
-
           <View style={styles.agendaTextView}>
             <TextInput editable={false} value={this.props.time} style={styles.timetext}/>
             <TextInput editable={false} value={this.props.title} style={styles.textInputTop}/>
@@ -34,58 +44,74 @@ class AgendaDisplay extends Component {
 }
 
 export default class Itinerary extends Component {
+  constructor(props) {
+    beer  = require('../res/icons/clickBeer.png');
+    boy  = require('../res/icons/clickBoy.png');
+    bus  = require('../res/icons/clickBus.png');
+    checkIn  = require('../res/icons/clickCheckIn.png');
+    coffee  = require('../res/icons/clickCoffee.png');
+    depart  = require('../res/icons/clickDepart.png');
+    eat  = require('../res/icons/clickEat.png');
+    friends  = require('../res/icons/clickFriends.png');
+    girl  = require('../res/icons/clickGirl.png');
+    land  = require('../res/icons/clickLand.png');
+    map  = require('../res/icons/clickMap.png');
+    sightSee  = require('../res/icons/clickSightSee.png');
+    oldPhone  = require('../res/icons/clickOldPhone.png');
+    sleep  = require('../res/icons/clickSleep.png');
+  super(props);
+  this.state = {
+    items: {
+       '2018-07-01': [{time: '10:00', iconName: depart, title: 'Flight', description: 'SA828 4hrs no stopover' },
+        {time: '14:00', iconName: land, title: 'Flight', description: 'Land in Cancun, Mexico' },
+        {time: '15:00', iconName: coffee, title: 'Coffee Stop', description: 'Best Mexican Coffee!'},
+        {time: '16:00', iconName: checkIn, title: 'Check In', description: 'Check into InterHostel'},
+        {time: '19:00', iconName: sleep, title: 'Sleep', description: 'Get a good rest'}],
+       '2018-07-02': [],
+       '2018-07-03': [{time: '06:00', iconName: depart, title: 'Flight', description: 'SA323 2hrs no stopover' },
+         {time: '12:00', iconName: coffee, title: 'Coffee Stop', description: 'Bullet Proof Coffee'},
+         {time: '16:00', iconName: friends, title: 'Catch-up', description: 'Meet with Han from contiki'},
+         {time: '19:00', iconName: checkIn, title: 'Check In', description: 'Check in to Hostel'}],
+       '2018-07-04': [],
+       '2018-07-05': [],
+       '2018-07-06': [{time: '09:00', iconName: map, title: 'Tour', description: 'Great wall of China Climb' },
+         {time: '16:00', iconName: oldPhone, title: 'Call Home', description: 'Dont forget to call mum!'},
+         {time: '19:00', iconName: beer, title: 'Pub Crawl', description: 'Leo Hostel Pub Crawl'}],
+       '2018-07-07': [],
+       '2018-07-08': [],
+       '2018-07-09': [],
+       '2018-07-10': [],
+       '2018-07-11': [],
+       '2018-07-12': [],
+       '2018-07-13': [],
+       '2018-07-14': [{time: '09:00', iconName: bus, title: 'Bus', description: 'Catch Bus to Paris' },
+         {time: '14:00', iconName: friends, title: 'Catch-up', description: 'Meet with uni friends'},
+         {time: '16:00', iconName: sightSee, title: 'Sight See', description: 'Visit the Eiffle Tower'},
+         {time: '17:00', iconName: checkIn, title: 'Check In', description: 'Check into Motel'},
+         {time: '18:00', iconName: eat, title: 'Eat', description: 'Visit winery'}],
+       '2018-07-15': [],
+       '2018-07-16': [],
+       '2018-07-17': [],
+       '2018-07-18': [],
+       '2018-07-19': [],
+       '2018-07-20': [],
+    }};
+  }
+
   render() {
-
-    phoneIcon = require('../res/icons/sleep.png');
-    coffeeIcon = require('../res/icons/coffee.png');
-    friendIcon = require('../res/icons/sleep.png');
-    accomIcon = require('../res/icons/accom.png');
-    flightIcon = require('../res/icons/plane.png');
-    drinkIcon = require('../res/icons/sleep.png');
-    tourIcon = require('../res/icons/sleep.png');
-
     return (
       <View style={styles.container}>
         <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
       <Agenda
-        items={
-          {'2018-07-01': [{time: '10:00', iconName: flightIcon, title: 'Flight', description: 'SA828 6hrs no stopover' },
-            {time: '15:00', iconName: coffeeIcon, title: 'Coffee Stop', description: 'Top 10 best coffee stops'}],
-           '2018-07-02': [],
-           '2018-07-03': [{time: '06:00', iconName: flightIcon, title: 'Flight', description: 'SA323 2hrs no stopover' },
-             {time: '12:00', iconName: coffeeIcon, title: 'Coffee Stop', description: 'Bullet Proof Coffee'},
-             {time: '16:00', iconName: friendIcon, title: 'Catch-up', description: 'Meet with Han from contiki'},
-             {time: '19:00', iconName: accomIcon, title: 'Check In', description: 'Check in to Hostel'}],
-           '2018-07-04': [],
-           '2018-07-05': [],
-           '2018-07-06': [{time: '09:00', iconName: tourIcon, title: 'Tour', description: 'Great wall of China Climb' },
-             {time: '16:00', iconName: phoneIcon, title: 'Call Home', description: 'Dont forget to call mum!'},
-             {time: '19:00', iconName: drinkIcon, title: 'Pub Crawl', description: 'Leo Hostel Pub Crawl'}],
-           '2018-07-07': [],
-           '2018-07-08': [],
-           '2018-07-09': [],
-           '2018-07-10': [],
-           '2018-07-11': [],
-           '2018-07-12': [],
-           '2018-07-13': [],
-           '2018-07-14': [],
-           '2018-07-15': [],
-           '2018-07-16': [],
-           '2018-07-17': [],
-           '2018-07-18': [],
-           '2018-07-19': [],
-           '2018-07-20': [],
-        }}
+        items={this.state.items}
         // callback that gets called when items for a certain month should be loaded (month became visible)
-        loadItemsForMonth={(month) => {console.log('trigger items loading')}}
+        //  loadItemsForMonth={this.loadItems.bind(this)}
         // callback that fires when the calendar is opened or closed
         onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
         // callback that gets called on day press
         onDayPress={(day)=>{console.log('day pressed')}}
         // callback that gets called when day changes while scrolling agenda list
         onDayChange={(day)=>{console.log('day changed')}}
-        // initially selected day
-        selected={'2018-07-11'}
         // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
         minDate={'2018-07-01'}
         // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
@@ -98,10 +124,6 @@ export default class Itinerary extends Component {
         renderItem={(item, firstItemInDay) =>
           { return (<AgendaDisplay firstItemInDay={firstItemInDay} time={item.time} iconName={item.iconName}
                 title={item.title} description={item.description}/>);}}
-
-        // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-      //  renderDay={(day, item) => {return (<AgendaDisplay day={day}/>);}}
-      //  renderItem={(item, firstItemInDay) => {return (<AgendaDisplay firstItemInDay={firstItemInDay}/>);}}
         // specify how empty date content with no items should be rendered
         renderEmptyDate={() => { return (<View />);}}
         // specify how agenda knob should look like
@@ -110,19 +132,21 @@ export default class Itinerary extends Component {
         renderEmptyData = {() => {return (<View />);}}
         // specify your item comparison function for increased performance
         rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
-        // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
-        onRefresh={() => console.log('refreshing...')}
-        // Set this true while waiting for new data from a refresh
-        refreshing={false}
-        // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
-        refreshControl={null}
-        time_proportional={true}
         // agenda theme
         theme={{
         }}
         // agenda container style
         style={{}}
         />
+        <Button
+          title="Add new item"
+          onPress={()=>{alert("Please Enter date, time, title, description")}}
+          style={{
+            flex: 1,
+            backgroundColor: 'rgb(116, 156, 237)',
+          }}
+         >
+        </Button>
         </View>
     );
   }
