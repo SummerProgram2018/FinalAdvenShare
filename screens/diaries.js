@@ -88,9 +88,7 @@ export default class Diaries extends Component {
             style={styles.chatBox2}
             onPress={() => this.props.navigation.navigate('Diary', {diary: "Skip Loading Diaries"})}
           >
-            <View style={{flex: 1, alignItems: 'center', justifyContent:'center'}}>
-              <Text style={{fontSize:40, justifyText:'center'}}> Make some memories! </Text>
-            </View>
+              <Text style={{fontSize:40, textAlign:'center', width: '100%'}}> Make some memories! </Text>
           </TouchableOpacity>
         :
           <ScrollView style={{flex: 1}}>
@@ -103,7 +101,7 @@ export default class Diaries extends Component {
             }
           </ScrollView>
         }
-        <View style={{width:'100%', height: 60, flexDirection: 'row'}}>
+        <View style={{width:'100%', height: 60, bottom: 5, position: 'absolute', flexDirection: 'row'}}>
           <View style={{width: 60, height: 60, alignItems: 'center', justifyContent: 'center'}}>
             <TouchableOpacity style = {styles.addButton2} onPress = {addDiary}>
               <Image style={styles.addButton2} source = {require('../res/icons/plus.png')}/>
@@ -212,12 +210,11 @@ var styles = StyleSheet.create({
      alignItems:'center'
    },
    chatBox2: {
-     padding: 5,
-     height: 100,
-     flexDirection: 'row',
+     width: "100%",
+     flex: 1,
      backgroundColor: 'transparent',
-     margin: 10,
-     alignItems:'center'
+     alignItems:'center',
+     justifyContent: 'center'
    },
    chatTextView: {
      backgroundColor: 'blue',
