@@ -10,8 +10,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, ScrollView} from 'react-native';
 import entryInfo from '../components/diarycomp';
 import NavigationButton from '../components/navigation';
-import firebase from 'react-native-firebase';
 
+import firebase from 'react-native-firebase';
 var config = {
     apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
     authDomain: "advenshare123.firebaseapp.com",
@@ -47,6 +47,7 @@ export default class Diaries extends Component {
     this.state = {
       diaries: [],
       database: firebase.database(),
+      storage: firebase.storage(),
       uid: firebase.auth().currentUser.uid,
       newDiaryName: ""
     }

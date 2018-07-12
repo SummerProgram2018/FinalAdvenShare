@@ -1,13 +1,13 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
  import React, {Component} from 'react';
  import {Platform, StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, ScrollView} from 'react-native';
+
+ import firebase from 'react-native-firebase';
+ var config = {
+     apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
+     authDomain: "advenshare123.firebaseapp.com",
+     databaseURL: "https://advenshare123.firebaseio.com/",
+     storageBucket: "advenshare123.appspot.com"
+ };
 
  class AboutMeTextInput extends Component{
    render () {
@@ -31,19 +31,23 @@
  export default class About extends Component<Props> {
    constructor (props, context) {
      super (props, context);
-     // store the rel data
+     firebase.initializeApp(config);
      this.state = {
-       name: "Name",
-       dob: "DD/MM/YYYY",
-       gender: "Non-Disclosed",
-       homeCountry: "Country of Origin",
-       bio: 'Tell us about yourself...',
+       name: "",
+       dob: "",
+       gender: "",
+       homeCountry: "",
+       bio: "",
+       database: firebase.database(),
+       storage: firebase.storage(),
+       uid: firebase.auth().currentUser.uid
      };
      changeName = this.changeName.bind(this);
      changeDob = this.changeDob.bind(this);
      changeGender = this.changeGender.bind(this);
      changeHomeCountry = this.changeHomeCountry.bind(this);
      changeBio = this.changeBio.bind(this);
+     submitDetails = this.submitDetails.bind(this);
   }
 
   changeName = (name) => {
@@ -61,6 +65,27 @@
   changeBio = (bio) => {
     this.setState({bio});
   }
+
+  submitDetails = () => {
+    this.state.database.ref('users/' + this.state.uid + '/basicInfo').update({
+      name: this.state.name,
+      dob: this.state.dob,
+      gender: this.state.gender,
+      homeCountry: this.state.homeCountry,
+      bio: this.state.bio
+    });
+  }
+
+  componentDidMount = () => {
+    this.state.database.ref('users/' + this.state.uid + '/basicInfo').once('value').then((snapshot) => {
+      this.setState({name: snapshot.child("name").val().toString()}),
+      this.setState({dob: snapshot.child("dob").val().toString()}),
+      this.setState({gender: snapshot.child("gender").val().toString()}),
+      this.setState({homeCountry: snapshot.child("homeCountry").val().toString()}),
+      this.setState({bio: snapshot.child("bio").val().toString()})
+    });
+  }
+
    render () {
      nameIcon = require('../res/meavatar.png');
      dobIcon = require('../res/icons/gender.png');
@@ -77,26 +102,31 @@
 
          <AboutMeTextInput
             onChangeFunction={this.changeName}
+            onBlur={this.submitDetails}
             textValue={this.state.name}
             icon={nameIcon}
          />
          <AboutMeTextInput
             onChangeFunction={this.changeDob}
+            onBlur={this.submitDetails}
             textValue = {this.state.dob}
             icon={dobIcon}
          />
          <AboutMeTextInput
             onChangeFunction={this.changeGender}
+            onBlur={this.submitDetails}
             textValue = {this.state.gender}
             icon={genderIcon}
          />
          <AboutMeTextInput
             onChangeFunction={this.changeHomeCountry}
+            onBlur={this.submitDetails}
             textValue = {this.state.homeCountry}
             icon={homeCountryIcon}
          />
          <AboutMeTextInput
             onChangeFunction={this.changeBio}
+            onBlur={this.submitDetails}
             textValue = {this.state.bio}
             icon={bioIcon}
          />
