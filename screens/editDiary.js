@@ -92,6 +92,7 @@ export default class DiaryEntry extends Component<Props> {
       sendFireBaseEntry = this.sendFireBaseEntry.bind(this)
       toggleModal = this.toggleModal.bind(this);
       getCurrentLocation = this.getCurrentLocation.bind(this)
+      displayCurrentCity = this.displayCurrentCity.bind(this)
     }
 
     sendFireBaseEntry() {
@@ -125,6 +126,16 @@ export default class DiaryEntry extends Component<Props> {
       this.setState({ modalVisible: !this.state.modalVisible });
     }
 
+    displayCurrentCity(latitude, longitude) {
+  //    alert("Displaying current city")
+      return fetch('http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=true')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson.city;
+      })
+      alert("city: " + responseJson.city)
+    }
+
     getCurrentLocation() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -134,9 +145,10 @@ export default class DiaryEntry extends Component<Props> {
           });
     },
   );
-  //    this.setState({city: navigator.geolocation.nearestCity(this.state.latitude, this.state.longitude)});
-      alert("You are at" + " latitude " + this.state.latitude + " longitude " + this.state.longitude)
-}
+    //  this.setState({city: navigator.geolocation.nearestCity(this.state.latitude, this.state.longitude)});
+  //    alert("You are at" + " latitude " + this.state.latitude + " longitude " + this.state.longitude)
+    displayCurrentCity(this.state.latitude, this.state.longitude)
+    }
 
     componentDidMount() {
       CameraRoll.getPhotos({
