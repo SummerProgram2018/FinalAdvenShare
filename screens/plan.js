@@ -25,6 +25,7 @@ export default class Plan extends Component {
     firebase.initializeApp(config);
     this.state = {
       database: firebase.database(),
+      storage: firebase.storage(),
       buttonLabel: 'Send data',
       uid: firebase.auth().currentUser.uid
     };
@@ -33,6 +34,9 @@ export default class Plan extends Component {
      addNewDiaryEntry = this.addNewDiaryEntry.bind(this);
      readBasicInfo = this.readBasicInfo.bind(this);
      readDiaryEntry = this.readDiaryEntry.bind(this);
+     readDiaryNames = this.readDiaryNames.bind(this);
+     addUserContact = this.addUserContact.bind(this);
+     sendMessage = this.sendMessage.bind(this);
   }
 
   setupNewBlankUserinFirebase() {
@@ -48,11 +52,41 @@ export default class Plan extends Component {
     });
   }
 
-  addNewDiaryEntry(diary, newCaption, newTimeDate, newImages) {
-    this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/').push({
+  addNewObjectToDiaryEntry(diary, newCaption, newTimeDate, newImages) {
       caption: newCaption,
+      this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/').push({
       timeDate: newTimeDate,
       images: newImages
+    });
+  }
+
+  addNewDiaryEntry(diary, title, date) {
+    this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/' + date).set({
+      title: title,
+      date: date,
+      objects: []
+    });
+  }
+
+  addUserContact(userContact) {
+    this.state.database.ref('users/' + this.state.uid + '/contacts/' + userContact).set({
+      chatID: userContact + this.state.uid
+    });
+  }
+
+  sendMessage(sendID, receiveID, message, time) {
+    var chatID;
+    alert('users/' + this.state.uid + '/contacts/' + receiveID)
+    this.state.database.ref('users/' + this.state.uid + '/contacts/' + receiveID).once('value').then((snapshot) => {
+      chatID = snapshot.child("chatID").val().toString()
+    })
+
+    alert("chatID: " + chatID);
+
+    this.state.database.ref('chats/' + chatID + '/').push({
+      senderID: sendID,
+      content: message,
+      timeStamp: time
     });
   }
 
@@ -79,11 +113,30 @@ export default class Plan extends Component {
     })
   }
 
+  readDiaryNames() {
+    this.state.database.ref('users/' + this.state.uid + '/diaries').once('value').then((snapshot) => {
+      snapshot.forEach((diary) => {
+        alert((diary.ref.toString().split('/')[6]).toString())
+      });
+    })
+  }
+
   buttonPress() {
+    alert("button pressed")
     /*setupNewBlankUserinFirebase(this.state.uid);
     addNewDiaryEntry("China", "A different yet still nice caption for this diary entry", "2018-07-06T16:35:43.511Z", ["lruegami", "iMaGeUrL2"]);*/
-    readBasicInfo();
+    //readBasicInfo();
     /*readDiaryEntry();*/
+    /*addNewDiaryEntry("China", "A different yet still nice caption for this diary entry", "2018-07-06T16:35:43.511Z", ["lruegami", "iMaGeUrL2"]);
+    addNewDiaryEntry("Mexico", "Tacos and Coronas", "2014-05-06T16:35:43.511Z", ["imageURL", "imageURL2"]);
+    addNewDiaryEntry("Greece", "Ancient shit", "2012-03-01T16:35:43.511Z", ["URLtoImage", "URL to an image"]);
+    readDiaryNames();*/
+    /*addUserContact("IUAS678fdsOID89");
+    sendMessage(this.state.uid, "IUAS678fdsOID89", "Hey mate how are you", "2018-07-12T01:08:44.56");
+    sendMessage(this.state.uid, "IUAS678fdsOID89", "Hope you are getting some yoga nodes", "2018-07-12T01:08:47.56");*/
+    addNewDiaryEntry("China", "Day 5: Great Wall", "2018-07-06");
+    addNewDiaryEntry("Mexico", "Lazy Sunday", "2014-05-06");
+    addNewDiaryEntry("Greece", "Island Day Trip", "2012-03-01");
 
   }
 
