@@ -20,7 +20,6 @@ export default class Login extends Component {
       keyboard: false,
       database: firebase.database(),
       storage: firebase.storage(),
-      uid: firebase.auth().currentUser.uid
     }
     pressLogin = this.pressLogin.bind(this);
   }

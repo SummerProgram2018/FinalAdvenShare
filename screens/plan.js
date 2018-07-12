@@ -28,6 +28,8 @@ export default class Plan extends Component {
       buttonLabel: 'Send data'
     };
      buttonPress = this.buttonPress.bind(this);
+     buttonPressLocation = this.buttonPressLocation.bind(this);
+     displayCurrentCity = this.displayCurrentCity.bind(this);
      setupNewBlankUserinFirebase = this.setupNewBlankUserinFirebase.bind(this);
      addNewDiaryEntry = this.addNewDiaryEntry.bind(this);
      readBasicInfo = this.readBasicInfo.bind(this);
@@ -132,6 +134,32 @@ export default class Plan extends Component {
         alert((diary.ref.toString().split('/')[6]).toString())
       });
     })
+  }
+
+
+  //URL WOULD BE
+  //var key = AqBEYVKLgbe-O9VurDp4gsNPGWjbhyVrZoKo9_nLq2YEqP2eUbK1OF5-1JgIRtBw
+  //var url = http://dev.virtualearth.net/REST/v1/Locations/-27.4698,153.0251?
+            //includeEntityTypes=PopulatedPlace&key=AqBEYVKLgbe-O9VurDp4gsNPGWjbhyVrZoKo9_nLq2YEqP2eUbK1OF5-1JgIRtBw
+  //The documentation is at: https://msdn.microsoft.com/en-us/library/ff701710.aspx
+
+  displayCurrentCity(latitude, longitude) {
+    return fetch('http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=true')
+     .then((response) => {response.json()})
+     .then((responseJson) => {
+       alert(JSON.stringify(responseJson))
+       return responseJson.city;
+    })
+    alert("city: " + responseJson.city)
+ }
+
+  buttonPressLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        //alert(position.coords.latitude + ' ' +  position.coords.longitude)
+        displayCurrentCity(-27.4698, 153.0251)
+      }
+    );
   }
 
   buttonPress() {
@@ -240,6 +268,11 @@ export default class Plan extends Component {
           title = {this.state.buttonLabel}
           color = "#841584"
           onPress={buttonPress}
+        />
+        <Button
+          title = "Location"
+          color = "#841584"
+          onPress={buttonPressLocation}
         />
       </View>
     );
