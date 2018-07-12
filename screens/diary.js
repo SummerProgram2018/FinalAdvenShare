@@ -56,7 +56,8 @@ class EntryBar extends Component {
   }
 
   edit() {
-    this.props.navigation.navigate('DiaryEntry', {date: this.props.date,
+    this.props.navigation.navigate('DiaryEntry', {diary: this.props.navigation.state.params.diary,
+                                                  date: this.props.date,
                                                   entry: this.props.entry})
   }
 
@@ -131,7 +132,7 @@ export default class Diary extends Component {
 
   componentDidMount() {
     // Do some shit to get the entries from firebase using
-    // this.props.navigation.state.diary
+    // this.props.navigation.state.params.diary
     var day = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
@@ -148,13 +149,15 @@ export default class Diary extends Component {
         entry = this.state.entries[i].entry;
       }
     }
-    this.props.navigation.navigate('DiaryEntry', {date: this.state.currentDate,
+    this.props.navigation.navigate('DiaryEntry', {diary: this.props.navigation.state.params.diary,
+                                                  date: this.state.currentDate,
                                                   entry: entry})
   }
 
   render () {
     return (
       <View style={styles.container}>
+        <Text>{this.props.navigation.state.params.diary}</Text>
         <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
         {this.state.entries.length == 0 ?
           <View style={{flex: 1, alignContent: 'center', justifyContent:'center'}}>
@@ -166,6 +169,7 @@ export default class Diary extends Component {
                 return (<EntryBar
                           date={entry.date}
                           navigation={this.props.navigation}
+                          entry={entry.entry}
                         >
                           <Text>{entry.entry}</Text>
                         </EntryBar>)
