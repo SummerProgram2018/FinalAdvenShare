@@ -20,11 +20,13 @@ class MeMap extends Component {
         <Image style={styles.mapImage} source={require('../res/map.png')}/>
           <View style = {styles.overlay}>
             <Image style = {styles.meIcon} source = {require('../res/meavatar.png')} />
-            <Text style = {styles.avatarText}>Hannah Jury</Text>
-            <TouchableOpacity style={styles.locationView} onPress={()=>{alert("Location services are unavailable :)")}}>
-              <Image style={styles.locationimage} source={require('../res/icons/location.png')}/>
-              <Text style={styles.locationText}>Your Location</Text>
-            </TouchableOpacity>
+              <Text style = {styles.avatarText}>Hannah Jury</Text>
+              <View style={{flexDirection:'row', alignItems:'center', justifyContent: 'center'}}>
+              <TouchableOpacity style={styles.locationView} onPress={()=>{alert("Location services are unavailable :)")}}>
+                <Image style={styles.locationimage} source={require('../res/icons/location.png')}/>
+                <Text style={styles.locationText}>Your Location</Text>
+              </TouchableOpacity>
+            </View>
           </View>
       </View>
     )
@@ -102,10 +104,11 @@ var styles = StyleSheet.create({
     padding: 20,
    },
    locationimage: {
-    flex:2,
     resizeMode:"contain",
     height: 20,
-    right:0
+    width: 20,
+    right:0,
+    marginRight: 10,
    },
    buttonText: {
     flex:3,
@@ -121,15 +124,15 @@ var styles = StyleSheet.create({
     width: "100%",
   },
   locationText: {
-    flex:3,
     backgroundColor: 'transparent',
     color: 'rgb(116, 156, 237)',
     fontSize: 20,
-    width: "100%",
+    fontWeight:"bold"
   },
   overlay: {
     backgroundColor: 'transparent',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   meIcon: {
     height: 150,
