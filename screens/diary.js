@@ -11,6 +11,13 @@ import {Platform, StyleSheet, Text, View, Image, TextInput, Button, TouchableOpa
 import entryInfo from '../components/diarycomp';
 import NavigationButton from '../components/navigation';
 
+import firebase from 'react-native-firebase';
+var config = {
+    apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
+    authDomain: "advenshare123.firebaseapp.com",
+    databaseURL: "https://advenshare123.firebaseio.com/",
+    storageBucket: "advenshare123.appspot.com"
+};
 
 const insertText = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de   Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
 
@@ -121,10 +128,15 @@ class EntryBar extends Component {
 export default class Diary extends Component {
   constructor(props, context) {
     super(props, context);
+    firebase.initializeApp(config);
     this.state = {
-      entries: [ {date: {day: 8, month: 7, year: 2018}, entry: insertText},
+      database: firebase.database(),
+      storage: firebase.storage(),
+      uid: firebase.auth().currentUser.uid,
+      /*entries: [ {date: {day: 8, month: 7, year: 2018}, entry: insertText},
                  {date: {day: 9, month: 7, year: 2018}, entry: "Fucking ripper of a longer message"},
-                 {date: {day: 10, month: 7, year: 2018}, entry: "Fucking rip of a long message"} ],
+                 {date: {day: 10, month: 7, year: 2018}, entry: "Fucking rip of a long message"} ],*/
+      entries: [],
       currentDate: {day: null, month: null, year: null}
     }
     addDiary = this.addDiary.bind(this);
@@ -132,7 +144,38 @@ export default class Diary extends Component {
 
   componentDidMount() {
     // Do some shit to get the entries from firebase using
-    // this.props.navigation.state.params.diary
+    var diary = this.props.navigation.state.params.diary.toString();
+      this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary).once('value').then((snapshot) => {
+        snapshot.forEach((date) => {
+          date.child('objects').forEach((object) => {
+            var entries = this.state.entries;
+
+            var day = (date.child('date').val().toString().split('-'))[2]
+            var month = (date.child('date').val().toString().split('-'))[1]
+            var year = (date.child('date').val().toString().split('-'))[0]
+
+            var entry = {
+              entry: object.child('entry').val().toString(),
+              alignment: object.child('alignment').val().toString(),
+              image: object.child('image').val().toString(),
+              location: object.child('location').val().toString(),
+              timeStamp: object.child('timeStamp').val().toString(),
+              title: object.child('title').val().toString(),
+              day: day,
+              month: month,
+              year: year
+
+            }
+
+            entries.push(entry)
+            this.setState({entries: entries})
+
+          })
+        })
+      })
+
+    alert(JSON.stringify(this.state.entries))
+
     var day = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();

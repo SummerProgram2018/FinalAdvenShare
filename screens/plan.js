@@ -39,7 +39,154 @@ export default class Plan extends Component {
      sendMessage = this.sendMessage.bind(this);
      addNewObjectToDiaryEntry = this.addNewObjectToDiaryEntry.bind(this);
      getMessages = this.getMessages.bind(this);
+     uploadImageToFirebase = this.uploadImageToFirebase.bind(this);
+     downloadImageFromFirebase = this.downloadImageFromFirebase.bind(this);
+     getDiaryObjects = this.getDiaryObjects.bind(this);
   }
+
+  /*
+    uploadImageToFirebase(file, filename) {
+
+      // Create the file metadata
+      var metadata = {
+        contentType: 'image/jpeg'
+      };
+
+      var storageRef = firebase.storage().ref();
+
+      // Upload file and metadata to the object 'images/mountains.jpg'
+      var uploadTask = storageRef.child('images/' + filename).put(file, metadata);
+
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              alert("Image upload paused")
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              alert("Image upload running")
+              break;
+          }
+        }, function(error) {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            alert("Unauthorized image upload attempted")
+            break;
+
+          case 'storage/canceled':
+            alert("User cancelled the upload")
+            break;
+
+          case 'storage/unknown':
+            alert("Unknown error occured")
+            break;
+        }
+      }, function() {
+        // Upload completed successfully, now we can get the download URL
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          alert('File available at', downloadURL);
+        });
+      });
+    }*/
+
+
+  /*uploadImageToFirebase() {
+    const Blob = RNFetchBlob.polyfill.blob;
+    const fs = RNFetchBlob.fs;
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
+
+    showImagePicker((response) => {
+      if(!response.didCancel) {
+        var mime = 'application/octet-stream'
+        return (dispatch) => {
+          return new Promise((resolve, reject) => {
+            const uploadUri = Platform.OS === 'ios' ? response.uri.replace('file://', '') : uri
+            const sessionId = new Date().getTime()
+            let uploadBlob = null
+            const imageRef = this.storageRef.child("pleasefuckingupload")
+            fs.readFile(uploadUri, 'base64').then((data) => {
+              return Blob.build(data, {type: '${mime};BASE64' })
+            }).then((blob) => {
+              uploadBlob = blob
+              return imageRef.put(blob, { contentType: mime })
+            }).then(() => {
+              uploadBlob.close()
+              return imageRef.getDownloadURL()
+            }).then((url) => {
+              resolve(url)
+              storeReference(url, sessionId)
+            }).catch((error) => {
+              reject(error)
+            })
+          })
+        }
+      }
+    })
+  }*/
+
+  uploadImageToFirebase() {
+    this.state.database.ref('users/' + this.state.uid + '/contacts').once('value').then((snapshot) => {
+      snapshot.forEach((contact) => { //Iterate through each user's contacts
+        var contactID = (contact.ref.toString().split('/')[6]).toString();
+        this.state.database.ref('users/' + contactID).once('value').then((snapshot) => {
+          alert(snapshot.child('basicInfo/name').val().toString()) //Get the contact's name
+          var chatId = snapshot.child('contacts/' + this.state.uid + '/chatID').val().toString();
+          alert(chatId) //And their chat IDs
+          this.state.database.ref('chats/' + chatId + '/').once('value').then((snapshot) => {
+            snapshot.forEach((messageID) => {
+              alert('chats/' + chatId + '/' + messageID.val().toString())
+              /*this.state.database.ref('chats/' + chatId + '/' + messageID.val().toString()).once('value').then((message) => {*/
+                alert(messageID.child('senderID').val().toString() + ': '
+                + messageID.child('timeStamp').val().toString() + ': '
+                + messageID.child('content').val().toString())
+              /*})*/
+            })
+          })
+        });
+
+        this.state.database.ref('chats/')
+
+      });
+    })
+  }
+
+  downloadImageFromFirebase() {
+
+  }
+    /*uploadImageToFirebase() {
+      var f2 = new File("../res/AdvenShare.png");
+      var file = Uri.fromFile(new File("../res/AdvenShare.png"));
+      var reference = this.state.storageRef.child("images/");
+      uploadTask = reference.putFile(file);
+    }*/
+  /*
+    downloadImageFromFirebase() {
+      this.state.storageRef.child("Dalian Book.JPG").getDownloadURL().then(function(url) {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function(event) {
+          var blob = xhr.response;
+        };
+        xhr.open('GET', url);
+        xhr.send();
+        // Or inserted into an <img> element:
+        var img = document.getElementById('myimg');
+        alert('1')
+        img.src = url;
+        alert("1")
+        uploadImageToFirebase(blob, "reuploadedpleasework.jpg")
+        alert("2")
+      }).catch(function(error) {
+        // Handle any errors
+      });
+      this.setState({photo: require('../res/meavatar.png')});
+    }*/
+
 
   setupNewBlankUserinFirebase() {
     this.state.database.ref('users/' + this.state.uid + '/basicInfo/').set({
@@ -63,6 +210,56 @@ export default class Plan extends Component {
     });
   }
 
+  getDiaryObjects(diary, date) {
+    alert('HERE');
+    alert('users/' + this.state.uid + '/diaries/' + diary + '/' + date);
+    this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/' + date).once('value').then((snapshot) => {
+      snapshot.child('objects').forEach((object) => {
+        alert(object.child('entry').val().toString())
+      })
+    })
+  }
+
+  componentDidMount() {
+    // Do some shit to get the entries from firebase using
+    var diary = this.props.navigation.state.params.diary.toString();
+      this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary).once('value').then((snapshot) => {
+        snapshot.forEach((date) => {
+          date.child('objects').forEach((object) => {
+            var entries = this.state.entries;
+
+            var day = (date.child('date').val().toString().split('-'))[2]
+            var month = (date.child('date').val().toString().split('-'))[1]
+            var year = (date.child('date').val().toString().split('-'))[0]
+
+            var entry = {
+              entry: object.child('entry').val().toString(),
+              alignment: object.child('alignment').val().toString(),
+              image: object.child('image').val().toString(),
+              location: object.child('location').val().toString(),
+              timeStamp: object.child('timeStamp').val().toString(),
+              title: object.child('title').val().toString(),
+              day: day,
+              month: month,
+              year: year
+
+            }
+
+            entries.push(entry)
+            this.setState({entries: entries})
+
+          })
+        })
+      })
+
+    alert(JSON.stringify(this.state.entries))
+
+    var day = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+    this.setState({currentDate: {day: day, month: month, year: year}})
+  }
+
   addNewDiaryEntry(diary, title, date) {
     this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/' + date).set({
       title: title,
@@ -72,7 +269,13 @@ export default class Plan extends Component {
   }
 
   addUserContact(userContact) {
+    //Add contact to users info
     this.state.database.ref('users/' + this.state.uid + '/contacts/' + userContact).set({
+      chatID: userContact + this.state.uid
+    });
+
+    //Add user to contacts info
+    this.state.database.ref('users/' +  userContact + '/contacts/' + this.state.uid).set({
       chatID: userContact + this.state.uid
     });
   }
@@ -172,10 +375,10 @@ export default class Plan extends Component {
     addNewDiaryEntry("Mexico", "Tacos and Coronas", "2014-05-06T16:35:43.511Z", ["imageURL", "imageURL2"]);
     addNewDiaryEntry("Greece", "Ancient shit", "2012-03-01T16:35:43.511Z", ["URLtoImage", "URL to an image"]);
     readDiaryNames();*/
-    /*addUserContact("IUAS678fdsOID89");
-    sendMessage(this.state.uid, "IUAS678fdsOID89", "Add some more messages", "2018-07-12T01:08:48.56");
-    sendMessage(this.state.uid, "IUAS678fdsOID89", "One last message for good luck", "2018-07-12T01:08:49.56");
-    addNewDiaryEntry("China", "Day 5: Great Wall", "2018-07-06");
+    /**addUserContact("4x1V73rKHgXqaFCc8VXNrO30NJG2");
+    sendMessage(this.state.uid, "4x1V73rKHgXqaFCc8VXNrO30NJG2", "Add some more messages", "2018-07-12T01:08:48.56");
+    sendMessage(this.state.uid, "4x1V73rKHgXqaFCc8VXNrO30NJG2", "One last message for good luck", "2018-07-12T01:08:49.56");*/
+    /*addNewDiaryEntry("China", "Day 5: Great Wall", "2018-07-06");
     addNewDiaryEntry("China", "Day 6: Forbidden City", "2018-07-06");
     addNewDiaryEntry("Mexico", "Lazy Sunday", "2014-05-06");
     addNewDiaryEntry("Greece", "Island Day Trip", "2012-03-01");
@@ -185,9 +388,11 @@ export default class Plan extends Component {
     addNewObjectToDiaryEntry("China", "2018-07-07", "Off to the forbidden city", "Beijing", "Excited to see the forbidden city", "9:45", "imageURL21", "left");
     addNewObjectToDiaryEntry("China", "2018-07-07", "Entry line", "The Forbidden City", "The entry line is so long!", "9:49", "imageURL22", "left");
     addNewObjectToDiaryEntry("China", "2018-07-07", "The Forbidden City", "The Forbidden City", "Its so pretty", "10:51", "imageURL23", "left");*/
-    sendMessage(this.state.uid, "IUAS678fdsOID89", "Message timestamped first but added last to check read sorting", "2018-07-11T01:08:48.56");
-    getMessages(this.state.uid, "IUAS678fdsOID89");
+    /*sendMessage(this.state.uid, "4x1V73rKHgXqaFCc8VXNrO30NJG2", "Message timestamped first but added last to check read sorting", "2018-07-11T01:08:48.56");
+    getMessages(this.state.uid, "4x1V73rKHgXqaFCc8VXNrO30NJG2");*/
 
+    /*uploadImageToFirebase();*/
+    getDiaryObjects("China", "2018-07-06");
 
   }
 
