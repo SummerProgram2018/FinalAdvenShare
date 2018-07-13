@@ -27,8 +27,8 @@ class ChatBox extends Component {
             </Text>
           </View>
           <View style={styles.chatTextView}>
-            <TextInput editable={false} value="User Name" style={styles.textInputTop}/>
-            <TextInput editable={false} value="Previous message..." style={styles.textInputBottom}/>
+            <TextInput editable={false} value={this.props.top} style={styles.textInputTop}/>
+            <TextInput editable={false} value={this.props.bottom} style={styles.textInputBottom}/>
           </View>
       </TouchableOpacity>
     )
@@ -40,10 +40,22 @@ export default class ChatFriends extends Component {
     return (
         <View style={styles.container}>
           <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+          <View style={{width: "100%", flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={{height: 30, flex: 1, backgroundColor: 'rgb(116, 156, 237)', alignItems: 'center', justifyContent: 'center'}}
+              onPress={() => this.props.navigation.navigate('ChatFriends')}>
+              <Text>Friends</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{height: 30, flex: 1, backgroundColor: 'rgb(116, 156, 237)', alignItems: 'center', justifyContent: 'center'}}
+              onPress={() => {this.props.navigation.navigate('ChatDiscover')}}>
+              <Text>Discover</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView style={{flex: 1}}>
-              <ChatBox navigation = {this.props.navigation}/>
-              <ChatBox navigation = {this.props.navigation}/>
-              <ChatBox navigation = {this.props.navigation}/>
+              <ChatBox navigation = {this.props.navigation} top={"Name"} bottom="Previous message..."/>
+              <ChatBox navigation = {this.props.navigation} top={"Name"} bottom="Previous message..."/>
+              <ChatBox navigation = {this.props.navigation} top={"Name"} bottom="Previous message..."/>
           </ScrollView>
         </View>
     );

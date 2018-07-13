@@ -15,10 +15,10 @@ import EditDiary from "./screens/editDiary";
 import Weather from "./screens/weather"
 import Accommodation from "./screens/accommodation"
 import Tours from "./screens/tours"
-import Currency from "./screens/currency"
 import ChangeCity from "./screens/changeCity"
 import Transport from "./screens/transport"
 import AddTour from "./screens/addTour"
+import AddAccommodation from "./screens/addAccommodation"
 
 const LogoutHeader = props => {
   signOutUser = async () => {
@@ -72,9 +72,6 @@ const MeTab = createStackNavigator(
     Favourites: {
       screen: Favourites
     },
-    AddTour: {
-      screen: AddTour
-    }
   },
   {
     navigationOptions: {
@@ -139,8 +136,11 @@ const PlanTab = createStackNavigator(
     Tours: {
       screen: Tours,
     },
-    Currency: {
-      screen: Currency,
+    AddTour: {
+      screen: AddTour
+    },
+    AddAccommodation: {
+      screen: AddAccommodation
     }
   }
 )

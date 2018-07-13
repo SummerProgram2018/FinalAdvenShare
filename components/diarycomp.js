@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TextInput, Button,
-  TouchableOpacity, ScrollView, Modal, Dimensions, CameraRoll, Animated} from 'react-native';
+  TouchableOpacity, ScrollView, Modal, Dimensions, CameraRoll, Animated, TouchableHighlight} from 'react-native';
 import entryInfo from '../components/diarycomp';
 import NavigationButton from '../components/navigation';
 
@@ -14,7 +14,7 @@ class EntryTile extends Component {
       height: this.minHeight,
       alignmentHeight: (this.props.slide.alignment == "center" ? 150 : 0),
       slide: this.props.slide/*{title: "Title", text: "Text", image: require('../res/AdvenShare.png'), location: "Location"}*/,
-      photos: this.props.photos,
+      photos: [],
       modalVisible: false,
       photoIndex: null,
       viewWidth: null
@@ -22,6 +22,7 @@ class EntryTile extends Component {
     _setViewWidth = this._setViewWidth.bind(this);
 
     toggle = this.toggle.bind(this)
+    setIndex = this.setIndex.bind(this)
     // Will have alignment, title, location, image, text
   }
 
@@ -30,6 +31,16 @@ class EntryTile extends Component {
       this.setState({
           height : testHeight < this.state.height ? this.state.height : testHeight
       });
+  }
+
+  componentDidMount() {
+    CameraRoll.getPhotos({
+      first: 20,
+      assetType: 'All' /*Change this line if we want only photos (currently gets video too)*/
+    })
+    .then((r) => {
+      this.setState({photos: r.edges})
+    })
   }
 
   _setViewWidth(event) {
@@ -113,7 +124,13 @@ class EntryTile extends Component {
   }
 
   toggleModal = () => {
-    this.setState({ modalVisible: !this.state.modalVisible });
+    if (this.state.modalVisible) {
+      var newSlide = this.state.slide;
+      newSlide.image = {uri: this.state.photos[this.state.index].node.image.uri};
+      this.setState({modalVisible: !this.state.modalVisible, slide: newSlide})
+    } else {
+      this.setState({ modalVisible: !this.state.modalVisible });
+    }
   }
 
   setTitle = (text) => {
@@ -155,15 +172,22 @@ class EntryTile extends Component {
               onRequestClose={() => console.log('closed')}
             >
               <Button
-                title="Close"
+                title="Choose"
                 onPress={this.toggleModal}
               />
-              <ScrollView style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+              <ScrollView contentContainerStyle={{flexWrap: 'wrap', flexDirection: 'row'}}>
                 {this.state.photos.map((p, i) => {
                   return (
-                    <Image style={{width: width/3, height:width/3}}
-                      source={{uri: p.node.image.uri}}
-                    />
+                    <TouchableHighlight
+                      style={{opacity: i === this.state.index ? 0.5 : 1}}
+                      key={i}
+                      underlayColor='transparent'
+                      onPress={() => this.setIndex(i)}
+                    >
+                      <Image style={{width: width/3, height:width/3}}
+                        source={{uri: p.node.image.uri}}
+                      />
+                    </TouchableHighlight>
                   )
                 })}
               </ScrollView>
@@ -222,7 +246,6 @@ export default class DiaryEntry extends Component<Props> {
         firstImage: false,
         addingImage: false,
         modalVisible: false,
-        photos: [],
         index: null,
         loaded: false,
         entry:  this.props.entry /*[{title: "Yo", text: "Hi", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
@@ -259,15 +282,6 @@ export default class DiaryEntry extends Component<Props> {
       {sendFireBaseEntry()}
     }
 
-    componentDidMount() {
-      CameraRoll.getPhotos({
-        first: 20,
-        assetType: 'All' /*Change this line if we want only photos (currently gets video too)*/
-      })
-      .then((r) => {
-        this.setState({photos: r.edges})
-      })
-    }
 
     dateToText(date) {
       return (date.day + '/' + date.month + '/' + date.year)
@@ -278,6 +292,7 @@ export default class DiaryEntry extends Component<Props> {
       var entry = this.state.entry;
       entry.push(blankSlide);
       this.setState({entry:entry})
+    //  alert("Found this many photos " + this.props.photos.length)
     }
 
     render () {

@@ -9,10 +9,11 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TextInput} from 'react-native';
 
-export default class AddTour extends Component {
+export default class AddAccommodation extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
         <View style={{width: "100%", margin:10}}>
           <TextInput style={{fontSize: 30, fontWeight: "bold"}} value="Name"/>
           <TextInput style={{fontSize: 30, fontWeight: "bold"}} value="Price"/>
