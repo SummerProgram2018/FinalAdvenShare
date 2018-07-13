@@ -24,7 +24,7 @@ class DiscoverBar extends Component {
     this.icons = {
       'up': require('../res/icons/ClickExpand.png'),
       'down': require('../res/icons/ClickExpand.png'),
-      'explore': require('../res/icons/Me.png'),
+      'explore': require('../res/icons/arrow.png'),
       'favourite': require('../res/icons/star.png')
     }
   }
@@ -108,13 +108,13 @@ class DiscoverBar extends Component {
     return (
       <Animated.View style={[styles.entryBox,{height: this.state.animation}]}>
         <View style={styles.dateIcon}>
-          <Image style={{height: 80, width: 80, resizeMode: 'contain', borderRadius: 40}} source={this.props.person}/>
+          <Image style={{height: 80, width: 80, resizeMode: 'contain', borderRadius: 60/2}} source={this.props.person}/>
         </View>
         <View style={styles.chatTextView} onLayout={this._setMaxHeight.bind(this)}>
           {this.props.children}
         </View>
-        <TouchableOpacity style={[styles.smallTouchable, {bottom: 2, right: 2}]} onPress={this.explore.bind(this)}>
-          <Image style={{height: 20, width: 20, resizeMode: 'contain'}} source={this.icons.edit}/>
+        <TouchableOpacity style={[styles.smallTouchable, {bottom: 2, right: 2,backgroundColor: 'transparent'}]} onPress={this.explore.bind(this)}>
+          <Image style={{height: 20, width: 20, resizeMode: 'contain', tintColour: 'rgb(116, 156, 237)'}} source={this.icons.explore}/>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.smallTouchable, {top: 2, right: 2, backgroundColor: 'transparent'}]} onPress={this.favourite.bind(this)}>
@@ -135,23 +135,23 @@ export default class Home extends Component {
     this.state = {
       entries: [
                  {date: {day: 8, month: 7, year: 2018},
-                 entry: [{title: "5", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 entry: [{title: "Chicago", text: "Today I visited...", image: require('../res/examplepics/sunset.png'), location: "location", alignment: "left"},
                  {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "right"},
                  {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]},
 
                  {date: {day: 9, month: 7, year: 2018},
-                  entry: [{title: "2", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                  entry: [{title: "Great Barrier Reef", text: "What an amazing day!", image: require('../res/examplepics/beach.png'), location: "location", alignment: "left"},
                   {title: "2", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "right"}]},
 
                 {date: {day: 10, month: 7, year: 2018},
-                 entry: [{title: "3", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 entry: [{title: "New York", text: "Not only did we get to...", image: require('../res/examplepics/river.png'), location: "location", alignment: "left"},
                  {title: "3", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]},
 
                 {date: {day: 11, month: 7, year: 2018},
-                 entry: [{title: "4", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"}]},
+                 entry: [{title: "South of France", text: "Beautiful day today rose picking!", image: require('../res/examplepics/rose.png'), location: "location", alignment: "left"}]},
 
                 {date: {day: 12, month: 7, year: 2018},
-                 entry: [{title: "5", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 entry: [{title: "Daintree Rainforest ", text: "We found the most amazing waterhole today", image: require('../res/examplepics/greentree.png'), location: "location", alignment: "left"},
                  {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"},
                  {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]}
                 ],
@@ -183,7 +183,7 @@ export default class Home extends Component {
                           date={dateEntry.date}
                           navigation={this.props.navigation}
                           entry={dateEntry.entry}
-                          person={require('../res/icons/Me.png')}
+                          person={require('../res/examplepics/nature.png')}
                         >
                            <DiaryEntry
                             diary="THIS SHOULD COME FROM FIREBASE"
@@ -224,7 +224,7 @@ var styles = StyleSheet.create({
    entryBox : {
      padding: 5,
      flexDirection: 'row',
-     backgroundColor: 'rgb(116, 156, 237)',
+     backgroundColor: 'white',
      margin: 10,
      borderRadius: 4,
      alignItems: 'flex-start'
@@ -247,6 +247,6 @@ var styles = StyleSheet.create({
      width: 20,
      borderRadius: 10,
      position: 'absolute',
-     backgroundColor: 'blue'
+     backgroundColor: 'grey'
    }
 });

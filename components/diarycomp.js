@@ -143,10 +143,10 @@ class EntryTile extends Component {
 
     if (this.state.viewWidth == null) {
       // Find the view width before trying to render the rest of the diary entry
-      return <View style={{flex: 1}} style={{height: 150 + this.state.alignmentHeight}} onLayout={this._setViewWidth.bind(this)}/>
+      return <View style={{flex: 1}} style={{height: 170 + this.state.alignmentHeight}} onLayout={this._setViewWidth.bind(this)}/>
     } else {
       return (
-        <View style={{height: this.state.height + this.state.alignmentHeight, backgroundColor: 'red'}}>
+        <View style={{height: this.state.height + this.state.alignmentHeight, backgroundColor: 'white'}}>
           {this.props.photos != null ?
             <Modal
               animationType={"slide"}
@@ -170,14 +170,14 @@ class EntryTile extends Component {
             </Modal>
           : null}
           <View style={[styles.entryBox, {flexDirection: entryFlexDirection}]}>
-            <View style={[{backgroundColor: '#841584', height: this.state.height + this.state.alignmentHeight}, textStyle]} onLayout={this._setMinHeight.bind(this)}>
-              <TextInput editable={this.props.editable} onChangeText={(text) => this.setTitle(text)}>
+            <View style={[{backgroundColor: 'white', height: this.state.height + this.state.alignmentHeight}, textStyle]} onLayout={this._setMinHeight.bind(this)}>
+              <TextInput style = {{fontWeight: 'bold', color: 'black'}} editable={this.props.editable} onChangeText={(text) => this.setTitle(text)}>
                 {this.state.slide.title}
               </TextInput>
-              <TextInput editable={this.props.editable} onChangeText={(text) => this.setText(text)}>{this.state.slide.text}</TextInput>
+              <TextInput style = {{color: 'grey', multiline: true}} editable={this.props.editable} onChangeText={(text) => this.setText(text)}>{this.state.slide.text}</TextInput>
             </View>
-            <Animated.View style={[styles.newBox, {left:this.state.animation}]}>
-              <Image resizeMode="contain" style={{height: this.state.viewWidth/3 - 3, width: this.state.viewWidth/3 - 3}} source={this.state.slide.image}/>
+            <Animated.View style={[styles.newBox, {left:this.state.animation, backgroundColor: 'white', justifyContent: 'center'}]}>
+              <Image resizeMode="stretch" style={{height: this.state.viewWidth/3 - 3, width: this.state.viewWidth/3 - 3}} source={this.state.slide.image}/>
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                 <Image style={{height: 10, width: 10, resizeMode: "contain", marginLeft: 10,marginRight: 10}} source={require('../res/icons/location.png')}/>
                 <Text style={{flex: 1}}>{this.state.slide.location}</Text>
@@ -351,15 +351,6 @@ var styles = StyleSheet.create({
     height: 40,
     width: 40,
   },
-  addButton: {
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    flex: 1,
-    bottom: 0,
-    left: 0,
-    height: 40,
-    width: 40,
-  },
   button: {
     justifyContent: 'center',
     flexWrap: 'wrap',
@@ -367,7 +358,7 @@ var styles = StyleSheet.create({
     height: 50,
   },
   newBox: {
-    backgroundColor: 'blue',
+    backgroundColor: 'transparent',
     position: 'absolute',
     margin: 5
   }

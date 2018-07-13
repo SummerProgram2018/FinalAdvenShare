@@ -126,23 +126,23 @@ export default class Diary extends Component {
     this.state = {
       entries: [
                  {date: {day: 8, month: 7, year: 2018},
-                 entry: [{title: "5", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 entry: [{title: "Sunset in Chicago", text: "1", image: require('../res/examplepics/sunset.png'), location: "location", alignment: "left"},
                  {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "right"},
                  {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]},
 
                  {date: {day: 9, month: 7, year: 2018},
-                  entry: [{title: "2", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                  entry: [{title: "Scuba diving in Hawaii", text: "1", image: require('../res/examplepics/swim.png'), location: "location", alignment: "left"},
                   {title: "2", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "right"}]},
 
                 {date: {day: 10, month: 7, year: 2018},
-                 entry: [{title: "3", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 entry: [{title: "Sightseeing in NY", text: "1", image: require('../res/examplepics/river.png'), location: "location", alignment: "left"},
                  {title: "3", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]},
 
                 {date: {day: 11, month: 7, year: 2018},
-                 entry: [{title: "4", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"}]},
+                 entry: [{title: "Falls Festival", text: "1", image: require('../res/examplepics/jump.png'), location: "location", alignment: "left"}]},
 
                 {date: {day: 12, month: 7, year: 2018},
-                 entry: [{title: "5", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 entry: [{title: "Monument Valley", text: "1", image: require('../res/examplepics/road.png'), location: "location", alignment: "left"},
                  {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"},
                  {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]}
                 ],
@@ -299,7 +299,7 @@ var styles = StyleSheet.create({
    entryBox : {
      padding: 5,
      flexDirection: 'row',
-     backgroundColor: 'rgb(116, 156, 237)',
+     backgroundColor: 'white',
      margin: 10,
      borderRadius: 4,
      alignItems: 'flex-start'
@@ -321,22 +321,22 @@ var styles = StyleSheet.create({
      flex: 1,
      fontWeight: 'bold',
      fontSize: 20,
-     color: '#000'
+     color: 'black'
    },
    textInputBottom: {
      flex: 1,
      fontSize: 20,
-     color: 'rgb(77, 77, 77)'
+     color: 'black'
    },
    nameLetter: {
      fontSize: 40,
-     color: 'rgb(77, 77, 77)'
+     color: 'white'
    },
    smallTouchable: {
      height: 20,
      width: 20,
      borderRadius: 10,
      position: 'absolute',
-     backgroundColor: 'blue'
+     backgroundColor: 'grey'
    }
 });
