@@ -7,16 +7,35 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Button, Linking} from 'react-native';
 
-export default class Accommodation extends Component {
+export default class Accomodation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tours: []
+    }
+    pressSearch = this.pressSearch.bind(this)
+  }
+
+  pressSearch() {
+    var url = "http://www.ctrip.com/"
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        alert("Don't know how to open URI: " + url);
+      }
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.list}>
-          <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
-        </View>
-        <Text>Accommodation</Text>
+        <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+        <Button title="Add Accomodation" onPress={() => this.props.navigation.navigate('AddAccommodation')}/>
+        <Button title="Find More" onPress={() => pressSearch()}/>
+        <Text>Tours</Text>
       </View>
     );
   }

@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Button, Alert, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Button, Alert, TouchableOpacity, Linking} from 'react-native';
 
 import firebase from 'react-native-firebase';
 var config = {
@@ -289,7 +289,14 @@ export default class Plan extends Component {
   }
 
   onPressCurrency() {
-    this.props.navigation.navigate('Currency')
+    var url = "http://hl.anseo.cn/"
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        alert("Don't know how to open URI: " + url);
+      }
+    });
   }
 
   onPressTours() {

@@ -72,7 +72,6 @@ export default class EditDiary extends Component<Props> {
         <View style={styles.container}>
         <ScrollView>
           <DiaryEntry
-            photos={this.state.photos}
             editable={true}
             entry={this.props.navigation.state.params.entry}
             updateSlide={(newSlide) => {this.updateSlide(newSlide, index)}}
