@@ -7,16 +7,18 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, TextInput} from 'react-native';
 
 export default class AddAccommodation extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.list}>
-          <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+      <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+        <View style={{width: "100%", margin:10}}>
+          <TextInput style={{fontSize: 30, fontWeight: "bold"}} value="Name"/>
+          <TextInput style={{fontSize: 30, fontWeight: "bold"}} value="Price"/>
+          <TextInput style={{fontSize: 30, fontWeight: "bold"}} value="Location"/>
         </View>
-        <Text>Add Acomodation</Text>
       </View>
     );
   }
