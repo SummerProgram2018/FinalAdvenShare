@@ -20,8 +20,8 @@ class ChatBox extends Component {
           </Text>
         </View>
         <View style={styles.chatTextView}>
-          <TextInput editable={false} value="Top" style={styles.textInputTop}/>
-          <TextInput editable={false} value="Bottom" style={styles.textInputBottom}/>
+          <TextInput editable={false} value="Name" style={styles.textInputTop}/>
+          <TextInput editable={false} value="Bio..." style={styles.textInputBottom}/>
         </View>
       </View>
     )
@@ -67,20 +67,22 @@ var styles = StyleSheet.create({
     padding: 5,
     height: 100,
     flexDirection: 'row',
-    backgroundColor: 'red',
+    borderRadius: 30/2,
+    backgroundColor: 'white',
     margin: 10,
     alignItems:'center'
   },
   chatTextView: {
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     flex: 1
   },
   chatIcon: {
-    height: 80,
-    width: 80,
-    borderRadius: 80/2,
-    backgroundColor: 'white',
+    height: 65,
+    width: 65,
+    borderRadius: 65/2,
+    backgroundColor: 'rgb(116, 156, 237)',
     marginRight: 10,
+    marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -97,6 +99,6 @@ var styles = StyleSheet.create({
   },
   nameLetter: {
     fontSize: 40,
-    color: 'rgb(77, 77, 77)'
+    color: 'white'
   }
 });
