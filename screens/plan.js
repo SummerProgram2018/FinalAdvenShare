@@ -236,45 +236,6 @@ export default class Plan extends Component {
     })
   }
 
-  componentDidMount() {
-    // Do some shit to get the entries from firebase using
-    var diary = this.props.navigation.state.params.diary.toString();
-      this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary).once('value').then((snapshot) => {
-        snapshot.forEach((date) => {
-          date.child('objects').forEach((object) => {
-            var entries = this.state.entries;
-
-            var day = (date.child('date').val().toString().split('-'))[2]
-            var month = (date.child('date').val().toString().split('-'))[1]
-            var year = (date.child('date').val().toString().split('-'))[0]
-
-            var entry = {
-              entry: object.child('entry').val().toString(),
-              alignment: object.child('alignment').val().toString(),
-              image: object.child('image').val().toString(),
-              location: object.child('location').val().toString(),
-              timeStamp: object.child('timeStamp').val().toString(),
-              title: object.child('title').val().toString(),
-              day: day,
-              month: month,
-              year: year
-
-            }
-
-            entries.push(entry)
-            this.setState({entries: entries})
-
-          })
-        })
-      })
-
-    alert(JSON.stringify(this.state.entries))
-
-    var day = new Date().getDate();
-    var month = new Date().getMonth() + 1;
-    var year = new Date().getFullYear();
-    this.setState({currentDate: {day: day, month: month, year: year}})
-  }
 
   addNewDiaryEntry(diary, title, date) {
     this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/' + date).set({

@@ -195,7 +195,7 @@ export default class Diary extends Component {
         })
       })
 
-    alert(JSON.stringify(this.state.entries))
+
 
     var day = new Date().getDate();
     var month = new Date().getMonth() + 1;
