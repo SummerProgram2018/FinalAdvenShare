@@ -8,22 +8,16 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
-import firebase from 'react-native-firebase';
 
-export default class Loading extends Component<Props> {
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? 'Main' : 'Register')
-    })
-  }
-
+export default class AddTour extends Component {
   render() {
     return (
-        <View style={styles.container}>
-          <View style={styles.list}>
-            <Image style={styles.backgroundImage} source={require('../res/Loading.png')}/>
-          </View>
+      <View style={styles.container}>
+        <View style={styles.list}>
+          <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
         </View>
+        <Text>Add Tour</Text>
+      </View>
     );
   }
 }
@@ -34,8 +28,8 @@ var styles = StyleSheet.create({
   },
   backgroundImage:{
     backgroundColor: 'transparent',
-    resizeMode: 'stretch',
     flex: 1,
+    resizeMode: 'contain',
     position: 'absolute',
     width: '100%',
     height: '100%',
@@ -47,6 +41,5 @@ var styles = StyleSheet.create({
        flex:1,
        flexDirection: 'row',
        height: 100,
-       alignItems: 'stretch',
    },
 });
