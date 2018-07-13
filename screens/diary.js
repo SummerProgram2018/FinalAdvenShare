@@ -8,9 +8,10 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TextInput, Button, TouchableOpacity, ScrollView, Animated} from 'react-native';
-import entryInfo from '../components/diarycomp';
+import DiaryEntry from '../components/diarycomp';
 import NavigationButton from '../components/navigation';
 
+<<<<<<< HEAD
 import firebase from 'react-native-firebase';
 var config = {
     apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
@@ -19,6 +20,8 @@ var config = {
     storageBucket: "advenshare123.appspot.com"
 };
 
+=======
+>>>>>>> 8866d7782fa0e12f62c7d4957cc00bb1cd1846b9
 const insertText = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de   Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
 
 // Asks for two views to be sent to it - short view and long view
@@ -32,9 +35,9 @@ class EntryBar extends Component {
       expandable  : false,
     };
     this.icons = {
-      'up': require('../res/icons/plus.png'),
-      'down': require('../res/icons/star.png'),
-      'edit': require('../res/icons/Chat.png')
+      'up': require('../res/icons/ClickExpand.png'),
+      'down': require('../res/icons/ClickExpand.png'),
+      'edit': require('../res/icons/ClickPencil.png')
     }
   }
 
@@ -63,7 +66,7 @@ class EntryBar extends Component {
   }
 
   edit() {
-    this.props.navigation.navigate('DiaryEntry', {diary: this.props.navigation.state.params.diary,
+    this.props.navigation.navigate('EditDiary', { diary: this.props.diary,
                                                   date: this.props.date,
                                                   entry: this.props.entry})
   }
@@ -103,6 +106,7 @@ class EntryBar extends Component {
     if(this.state.expanded){
         iconToggle = this.icons['up'];   //Step 4
     }
+
     return (
       <Animated.View style={[styles.entryBox,{height: this.state.animation}]}>
         <View style={styles.dateIcon}>
@@ -125,6 +129,8 @@ class EntryBar extends Component {
   }
 }
 
+
+
 export default class Diary extends Component {
   constructor(props, context) {
     super(props, context);
@@ -133,10 +139,28 @@ export default class Diary extends Component {
       database: firebase.database(),
       storage: firebase.storage(),
       uid: firebase.auth().currentUser.uid,
-      /*entries: [ {date: {day: 8, month: 7, year: 2018}, entry: insertText},
-                 {date: {day: 9, month: 7, year: 2018}, entry: "Fucking ripper of a longer message"},
-                 {date: {day: 10, month: 7, year: 2018}, entry: "Fucking rip of a long message"} ],*/
-      entries: [],
+      entries: [
+                 {date: {day: 8, month: 7, year: 2018},
+                 entry: [{title: "5", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "right"},
+                 {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]},
+
+                 {date: {day: 9, month: 7, year: 2018},
+                  entry: [{title: "2", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                  {title: "2", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "right"}]},
+
+                {date: {day: 10, month: 7, year: 2018},
+                 entry: [{title: "3", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 {title: "3", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]},
+
+                {date: {day: 11, month: 7, year: 2018},
+                 entry: [{title: "4", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"}]},
+
+                {date: {day: 12, month: 7, year: 2018},
+                 entry: [{title: "5", text: "1", image: require('../res/AdvenShare.png'), location: "location", alignment: "left"},
+                 {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"},
+                 {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]}
+                ],
       currentDate: {day: null, month: null, year: null}
     }
     addDiary = this.addDiary.bind(this);
@@ -192,9 +216,9 @@ export default class Diary extends Component {
         entry = this.state.entries[i].entry;
       }
     }
-    this.props.navigation.navigate('DiaryEntry', {diary: this.props.navigation.state.params.diary,
-                                                  date: this.state.currentDate,
-                                                  entry: entry})
+    this.props.navigation.navigate('EditDiary', {diary: this.props.navigation.state.params.diary,
+                                                 date: this.state.currentDate,
+                                                 entry: entry})
   }
 
   render () {
@@ -208,13 +232,18 @@ export default class Diary extends Component {
           </View>
         :
           <ScrollView style={{flex: 1}}>
-            {this.state.entries.map((entry) => {
+            {this.state.entries.map((dateEntry, i) => {
                 return (<EntryBar
-                          date={entry.date}
+                          date={dateEntry.date}
                           navigation={this.props.navigation}
-                          entry={entry.entry}
+                          entry={dateEntry.entry}
                         >
-                          <Text>{entry.entry}</Text>
+                           <DiaryEntry
+                            diary={this.props.navigation.state.params.diary}
+                            date={dateEntry.date}
+                            editable={false}
+                            entry={dateEntry.entry}
+                          />
                         </EntryBar>)
               })
             }
@@ -331,7 +360,7 @@ var styles = StyleSheet.create({
      height: 80,
      width: 80,
      backgroundColor: 'transparent',
-     marginRight: 10,
+     marginRight: 0,
      alignItems: 'center',
    },
    textInputTop: {

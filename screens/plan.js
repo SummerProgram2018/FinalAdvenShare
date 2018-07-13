@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Button, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Button, Alert, TouchableOpacity, Linking} from 'react-native';
 
 import firebase from 'react-native-firebase';
 var config = {
@@ -25,7 +25,8 @@ export default class Plan extends Component {
       database: firebase.database(),
       storage: firebase.storage(),
       uid: firebase.auth().currentUser.uid,
-      buttonLabel: 'Send data'
+      buttonLabel: 'Send data',
+      city: "Dalian"
     };
      buttonPress = this.buttonPress.bind(this);
      buttonPressLocation = this.buttonPressLocation.bind(this);
@@ -39,9 +40,24 @@ export default class Plan extends Component {
      sendMessage = this.sendMessage.bind(this);
      addNewObjectToDiaryEntry = this.addNewObjectToDiaryEntry.bind(this);
      getMessages = this.getMessages.bind(this);
+
+     onPressTours = this.onPressTours.bind(this);
+     onPressWeather = this.onPressWeather.bind(this);
+     onPressCurrency = this.onPressCurrency.bind(this);
+     onPressTransport = this.onPressTransport.bind(this);
+     onPressChangeCity = this.onPressChangeCity.bind(this);
+     onPressAccommodation = this.onPressAccommodation.bind(this);
+
+     changeCity = this.changeCity.bind(this);
+
      uploadImageToFirebase = this.uploadImageToFirebase.bind(this);
      downloadImageFromFirebase = this.downloadImageFromFirebase.bind(this);
      getDiaryObjects = this.getDiaryObjects.bind(this);
+  }
+
+
+  changeCity(text) {
+    this.setState({city: text})
   }
 
   /*
@@ -461,14 +477,72 @@ export default class Plan extends Component {
     }
     */
 
+  onPressWeather() {
+    this.props.navigation.navigate('Weather', {city: this.state.city})
+  }
+
+  onPressAccommodation() {
+    this.props.navigation.navigate('Accommodation')
+  }
+
+  onPressChangeCity() {
+    this.props.navigation.navigate('ChangeCity', {city: this.state.city,
+            changeFunc: (text) => changeCity(text)})
+  }
+
+  onPressTransport() {
+    this.props.navigation.navigate('Transport')
+  }
+
+  onPressCurrency() {
+    var url = "http://hl.anseo.cn/"
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        alert("Don't know how to open URI: " + url);
+      }
+    });
+  }
+
+  onPressTours() {
+    this.props.navigation.navigate('Tours')
+  }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.list}>
-          <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+        <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center'}}>
+            <TouchableOpacity style={styles.buttonHolderStyle} title="1"
+                          onPress={() => onPressWeather()}>
+              <Image style={styles.buttonStyle} source={require('../res/icons/weather.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonHolderStyle} title="3"
+              onPress={() => onPressAccommodation()}>
+              <Image style={styles.buttonStyle} source={require('../res/icons/accommodation.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonHolderStyle} title="5"
+                              onPress={() => onPressChangeCity()}>
+              <Image style={styles.buttonStyle} source={require('../res/icons/change.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'center'}}>
+            <TouchableOpacity style={styles.buttonHolderStyle} title="2"
+                          onPress={() => onPressTransport()}>
+              <Image style={styles.buttonStyle} source={require('../res/icons/transport.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonHolderStyle} title="4"
+                          onPress={() => onPressCurrency()}>
+              <Image style={styles.buttonStyle} source={require('../res/icons/currency.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonHolderStyle} title="6"
+                          onPress={() => onPressTours()}>
+              <Image style={styles.buttonStyle} source={require('../res/icons/tours.png')}/>
+            </TouchableOpacity>
+          </View>
         </View>
-        <Text>Plan</Text>
         <Button
           title = {this.state.buttonLabel}
           color = "#841584"
@@ -504,4 +578,13 @@ var styles = StyleSheet.create({
        flexDirection: 'row',
        height: 100,
    },
+   buttonHolderStyle: {
+      margin: 35
+   },
+   buttonStyle: {
+     width: 100,
+     height: 100,
+     borderRadius: 10,
+     resizeMode: 'contain',
+   }
 });

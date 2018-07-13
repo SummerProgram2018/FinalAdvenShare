@@ -7,23 +7,30 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Button, ScrollView, TextInput} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Button, ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {createStackNavigator, TabNavigator} from 'react-navigation';
 import firebase from 'react-native-firebase';
+import ChatDialog from "./chatDialog";
 
 class ChatBox extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {text: ""}
+  }
+
   render() {
     return (
-      <View style={styles.chatBox}>
-        <View style={styles.chatIcon}>
-          <Text style={styles.nameLetter}>
-            C
-          </Text>
-        </View>
-        <View style={styles.chatTextView}>
-          <TextInput editable={false} value="Top" style={styles.textInputTop}/>
-          <TextInput editable={false} value="Bottom" style={styles.textInputBottom}/>
-        </View>
-      </View>
+      <TouchableOpacity style={styles.chatBox} onPress={()=>{this.props.navigation.navigate('ChatDialog')}}>
+          <View style={styles.chatIcon}>
+            <Text style={styles.nameLetter}>
+              C
+            </Text>
+          </View>
+          <View style={styles.chatTextView}>
+            <TextInput editable={false} value="User Name" style={styles.textInputTop}/>
+            <TextInput editable={false} value="Previous message..." style={styles.textInputBottom}/>
+          </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -34,8 +41,9 @@ export default class ChatFriends extends Component {
         <View style={styles.container}>
           <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
           <ScrollView style={{flex: 1}}>
-              <ChatBox/>
-              <ChatBox/>
+              <ChatBox navigation = {this.props.navigation}/>
+              <ChatBox navigation = {this.props.navigation}/>
+              <ChatBox navigation = {this.props.navigation}/>
           </ScrollView>
         </View>
     );
@@ -66,20 +74,22 @@ var styles = StyleSheet.create({
     padding: 5,
     height: 100,
     flexDirection: 'row',
-    backgroundColor: 'red',
+    borderRadius: 30/2,
+    backgroundColor: 'white',
     margin: 10,
     alignItems:'center'
   },
   chatTextView: {
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     flex: 1
   },
   chatIcon: {
-    height: 80,
-    width: 80,
-    borderRadius: 80/2,
-    backgroundColor: 'white',
+    height: 65,
+    width: 65,
+    borderRadius: 65/2,
+    backgroundColor: 'rgb(116, 156, 237)',
     marginRight: 10,
+    marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -96,6 +106,9 @@ var styles = StyleSheet.create({
   },
   nameLetter: {
     fontSize: 40,
-    color: 'rgb(77, 77, 77)'
-  }
+    color: 'white'
+  },
+  optionsView: {
+    backgroundColor: 'transparent',
+   }
 });
