@@ -17,57 +17,29 @@ import {createStackNavigator, TabNavigator} from 'react-navigation'
 import firebase from 'react-native-firebase';
 import ChatFriends from './chatFriends'
 import ChatDiscover from './chatDiscover'
+import ChatDialog from './chatDialog'
 
 
-export class ChatBox extends Component {
-  render() {
-    return (
-      <View style={styles.chatBox}>
-        <View style={styles.chatIcon}>
-          <Text style={styles.nameLetter}>
-            C
-          </Text>
-        </View>
-        <View style={styles.chatTextView}>
-          <TextInput editable={false} value="Top" style={styles.textInputTop}/>
-          <TextInput editable={false} value="Bottom" style={styles.textInputBottom}/>
-        </View>
-      </View>
-    )
-  }
-}
-
-const FriendsTab = createStackNavigator(
-  {
-    Friends: {
-      screen: ChatFriends,
-      navigationOptions: {
-        header: null
-      }
-    }
-  }
-)
-
-const DiscoverTab = createStackNavigator(
-  {
-    Discover: {
-      screen: ChatDiscover,
-      navigationOptions: {
-        header: null
-      }
-    }
-  }
-)
-
-
-const ChatNav = TabNavigator(
+const ChatNav = createStackNavigator(
     {
-      Chat: FriendsTab,
-      Discover: DiscoverTab,
+      ChatFriends: {
+        screen: ChatFriends,
+        navigationOptions: {
+          header: null
+        }
+      },
+      ChatDiscover: {
+        screen: ChatDiscover,
+        navigationOptions: {
+          header: null
+        }
+      },
+      ChatDialog: {
+        screen: ChatDialog,
+      }
     },
     {
-      initialRouteName: "Chat",
-      tabBarPosition: 'top'
+      initialRouteName: "ChatFriends",
     }
 )
 

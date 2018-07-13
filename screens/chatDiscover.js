@@ -7,23 +7,28 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, Button, ScrollView, TextInput} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, Button, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import firebase from 'react-native-firebase';
 
 class ChatBox extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {text: ""}
+  }
+
   render() {
     return (
-      <View style={styles.chatBox}>
-        <View style={styles.chatIcon}>
-          <Text style={styles.nameLetter}>
-            C
-          </Text>
-        </View>
-        <View style={styles.chatTextView}>
-          <TextInput editable={false} value="Name" style={styles.textInputTop}/>
-          <TextInput editable={false} value="Bio..." style={styles.textInputBottom}/>
-        </View>
-      </View>
+      <TouchableOpacity style={styles.chatBox} onPress={()=>{this.props.navigation.navigate('ChatDialog')}}>
+          <View style={styles.chatIcon}>
+            <Text style={styles.nameLetter}>
+              C
+            </Text>
+          </View>
+          <View style={styles.chatTextView}>
+            <TextInput editable={false} value={this.props.top} style={styles.textInputTop}/>
+            <TextInput editable={false} value={this.props.bottom} style={styles.textInputBottom}/>
+          </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -33,10 +38,22 @@ export default class ChatDiscover extends Component {
     return (
         <View style={styles.container}>
           <Image style={styles.backgroundImage} source={require('../res/cloud.png')}/>
+          <View style={{width: "100%", flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={{height: 30, flex: 1, backgroundColor: 'rgb(116, 156, 237)', alignItems: 'center', justifyContent: 'center'}}
+              onPress={() => this.props.navigation.navigate('ChatFriends')}>
+              <Text>Friends</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{height: 30, flex: 1, backgroundColor: 'rgb(116, 156, 237)', alignItems: 'center', justifyContent: 'center'}}
+              onPress={() => {this.props.navigation.navigate('ChatDiscover')}}>
+              <Text>Discover</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView style={{flex: 1}}>
-              <ChatBox/>
-              <ChatBox/>
-              <ChatBox/>
+              <ChatBox navigation={this.props.navigation} top={"Name"} bottom={"Bio..."}/>
+              <ChatBox navigation={this.props.navigation} top={"Name"} bottom={"Bio..."}/>
+              <ChatBox navigation={this.props.navigation} top={"Name"} bottom={"Bio..."}/>
           </ScrollView>
         </View>
     );

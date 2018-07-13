@@ -136,32 +136,7 @@ export default class ChatDialog extends Component {
       };
     });
   }
-/*
-  renderCustomActions(props) {
-    if (Platform.OS === 'ios') {
-      return (
-        <CustomActions
-          {...props}
-        />
-      );
-    }
-    const options = {
-      'Action 1': (props) => {
-        alert('option 1');
-      },
-      'Action 2': (props) => {
-        alert('option 2');
-      },
-      'Cancel': () => {},
-    };
-    return (
-      <Actions
-        {...props}
-        options={options}
-      />
-    );
-  }
-*/
+
   renderBubble(props) {
     return (
       <Bubble
@@ -188,15 +163,7 @@ export default class ChatDialog extends Component {
       />
     );
   }
-/*
-  renderCustomView(props) {
-    return (
-      <CustomView
-        {...props}
-      />
-    );
-  }
-*/
+
   renderFooter(props) {
     if (this.state.typingText) {
       return (
