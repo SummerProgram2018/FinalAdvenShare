@@ -154,7 +154,7 @@ export default class Diary extends Component {
                  entry: [{title: "Falls Festival", text: "1", image: require('../res/examplepics/jump.png'), location: "location", alignment: "left"}]},
 
                 {date: {day: 12, month: 7, year: 2018},
-                 entry: [{title: "Monument Valley", text: "1", image: require('../res/examplepics/road.png'), location: "location", alignment: "left"},
+                 entry: [{title: "Monument Valley", text: "1", image: require('../res/examplepics/river.png'), location: "location", alignment: "left"},
                  {title: "5", text: "2", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"},
                  {title: "5", text: "3", image: require('../res/AdvenShare.png'), location: "lolcation", alignment: "center"}]}
                 ],
@@ -207,7 +207,11 @@ export default class Diary extends Component {
     var dates = this.state.entries.map(obj => {
       return(obj.date)
     })
-    var entry = null;
+    var entry = [{date: this.state.currentDate,
+        entry: [
+          {title: "Title", text: "Text", image: require('../res/examplepics/sunset.png'), location: "Location", alignment: "left"}
+        ]}
+    ]
     for (var i = 0; i < this.state.entries.length; i++) {
       if (JSON.stringify(this.state.currentDate) == JSON.stringify(dates[i])) {
         entry = this.state.entries[i].entry;
