@@ -12,15 +12,26 @@ import {createStackNavigator, TabNavigator} from 'react-navigation';
 import firebase from 'react-native-firebase';
 import ChatDialog from "./chatDialog";
 
+var config = {
+    apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
+    authDomain: "advenshare123.firebaseapp.com",
+    databaseURL: "https://advenshare123.firebaseio.com/",
+    storageBucket: "advenshare123.appspot.com"
+};
+
 class ChatBox extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {text: ""}
+    this.state = {
+      text: "",
+    }
   }
 
   render() {
     return (
-      <TouchableOpacity style={styles.chatBox} onPress={()=>{this.props.navigation.navigate('ChatDialog')}}>
+      <TouchableOpacity style={styles.chatBox} onPress={()=>{this.props.navigation.navigate('ChatDialog', {messages: this.props.messages,
+                                                                                                           chatId: this.props.chatId,
+                                                                                                           userId: this.props.uid})}}>
           <View style={styles.chatIcon}>
             <Text style={styles.nameLetter}>
               C
@@ -36,6 +47,50 @@ class ChatBox extends Component {
 }
 
 export default class ChatFriends extends Component {
+  constructor(props) {
+    super(props)
+    firebase.initializeApp(config);
+    this.state = {
+      chats: []
+    }
+  }
+
+  componentDidMount() {
+    var chats = [];
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contacts').once('value').then((snapshot) => {
+      snapshot.forEach((contact) => { //Iterate through each user's contacts
+        var contactID = (contact.ref.toString().split('/')[6]).toString();
+        firebase.database().ref('users/' + contactID).once('value').then((snapshot) => {
+          var newChat = {name: "", chatId: "", messages: []}
+          newChat.name = snapshot.child('basicInfo/name').val().toString();
+          var chatId = snapshot.child('contacts/' + firebase.auth().currentUser.uid + '/chatID').val().toString();
+          newChat.chatId = chatId;
+          firebase.database().ref('chats/' + chatId + '/').once('value').then((snapshot) => {
+            snapshot.forEach((messageID) => {
+              var newMessage = {};
+              newMessage.senderID = messageID.child('senderID').val().toString();
+              newMessage.timeStamp = messageID.child('timeStamp').val().toString();
+              newMessage.content = messageID.child('content').val().toString();
+              var newMessages = newChat.messages;
+              newMessages.unshift(newMessage);
+              newChat.messages= newMessages
+            })
+            chats.push(newChat)
+          }).then(() => {
+          }).then(() => {
+            this.setState({
+              chats: chats,
+              database: firebase.database(),
+              storage: firebase.storage(),
+              uid: firebase.auth().currentUser.uid,
+            })
+          })
+        })
+        firebase.database().ref('chats/')
+      });
+    })
+  }
+
   render() {
     return (
         <View style={styles.container}>
@@ -53,9 +108,38 @@ export default class ChatFriends extends Component {
             </TouchableOpacity>
           </View>
           <ScrollView style={{flex: 1}}>
-              <ChatBox navigation = {this.props.navigation} top={"Name"} bottom="Previous message..."/>
-              <ChatBox navigation = {this.props.navigation} top={"Name"} bottom="Previous message..."/>
-              <ChatBox navigation = {this.props.navigation} top={"Name"} bottom="Previous message..."/>
+              { this.state.chats.map((chat) => {
+                  return (<ChatBox navigation={this.props.navigation}
+                                  top={chat.name}
+                                  chatId={chat.chatId}
+                                  uid={this.state.uid}
+                                  bottom={chat.messages[0].content}
+                                  messages={chat.messages.map((message, i) => {
+                                    return (message.senderID == this.state.uid ?
+                                       { _id: i,
+                                         text: message.content,
+                                         createdAt: message.timeStamp,
+                                         user: {
+                                           _id: 1,
+                                           name: chat.name
+                                         },
+                                          sent: true,
+                                       }
+                                     :
+                                       {  _id: i,
+                                          text: message.content,
+                                          createdAt: message.timeStamp,
+                                          user: {
+                                            _id: 2,
+                                            name: this.state.uid
+                                          },
+                                          sent: true,
+                                        }
+                                      )
+                                  })}
+                          />)
+                })
+              }
           </ScrollView>
         </View>
     );

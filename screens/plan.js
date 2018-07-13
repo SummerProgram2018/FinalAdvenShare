@@ -236,7 +236,7 @@ export default class Plan extends Component {
     })
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     // Do some shit to get the entries from firebase using
     var diary = this.props.navigation.state.params.diary.toString();
       this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary).once('value').then((snapshot) => {
@@ -274,7 +274,7 @@ export default class Plan extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     this.setState({currentDate: {day: day, month: month, year: year}})
-  }
+  } */
 
   addNewDiaryEntry(diary, title, date) {
     this.state.database.ref('users/' + this.state.uid + '/diaries/' + diary + '/' + date).set({

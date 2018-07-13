@@ -19,11 +19,21 @@ import {
 } from 'react-native';
 
 import {GiftedChat, Actions, Bubble, SystemMessage} from 'react-native-gifted-chat';
+import firebase from 'react-native-firebase';
+var config = {
+    apiKey: "AIzaSyCQIFzjQ5RofbMDC490ctjBbstxOCjOvK8",
+    authDomain: "advenshare123.firebaseapp.com",
+    databaseURL: "https://advenshare123.firebaseio.com/",
+    storageBucket: "advenshare123.appspot.com"
+};
 
 export default class ChatDialog extends Component {
   constructor(props) {
     super(props);
+    firebase.initializeApp(config);
     this.state = {
+      database: firebase.database(),
+      storage: firebase.storage(),
       messages: [],
       loadEarlier: true,
       typingText: null,
@@ -32,11 +42,11 @@ export default class ChatDialog extends Component {
 
     this._isMounted = false;
     this.onSend = this.onSend.bind(this);
-    this.onReceive = this.onReceive.bind(this);
+  //  this.onReceive = this.onReceive.bind(this);
     this.renderBubble = this.renderBubble.bind(this);
     this.renderSystemMessage = this.renderSystemMessage.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
-    this.onLoadEarlier = this.onLoadEarlier.bind(this);
+  //  this.onLoadEarlier = this.onLoadEarlier.bind(this);
 
     this._isAlright = null;
   }
@@ -45,7 +55,7 @@ export default class ChatDialog extends Component {
     this._isMounted = true;
     this.setState(() => {
       return {
-        messages: require('./messages.js'),
+        messages: this.props.navigation.state.params.messages,
       };
     });
   }
@@ -54,7 +64,7 @@ export default class ChatDialog extends Component {
     this._isMounted = false;
   }
 
-  onLoadEarlier() {
+  /* onLoadEarlier() {
     this.setState((previousState) => {
       return {
         isLoadingEarlier: true,
@@ -72,17 +82,40 @@ export default class ChatDialog extends Component {
         });
       }
     }, 1000); // simulating network
-  }
+  } */
 
   onSend(messages = []) {
+    console.log("\n\n\n\n\n\nMESSSSSAGE IS HERE")
+    console.log(messages)
+    console.log("senderID: " + this.props.navigation.state.params.userId)
+    console.log("chatID: " + this.props.navigation.state.params.chatId)
+    console.log("content: " + messages[0].text)
+    console.log("timeStamp: " + new Date() )
     this.setState((previousState) => {
       return {
         messages: GiftedChat.append(previousState.messages, messages),
       };
     });
+    var chatID = this.props.navigation.state.params.chatId;
+    var sendID = this.props.navigation.state.params.userId;
+    var message = messages[0].text;
+    var currentDate = Date();
+    var listDate = currentDate.split(' ');
+    var listTime = listDate[4].split(':');
+    var month = new Date().getMonth() + 1;
+    if (month < 10) {
+      var formattedMonth = "0" + month;
+    }
+    var formattedTimeStamp = listDate[3]+'-'+formattedMonth+'-'+listDate[2]+'T'+listTime[0]+':'+listTime[1]+':'+listTime[2];
+    console.log(formattedTimeStamp)
+    this.state.database.ref('chats/' + chatID + '/').push({
+      senderID: sendID,
+      content: message,
+      timeStamp: formattedTimeStamp
+    });
 
     // for demo purpose
-    this.answerDemo(messages);
+    //this.answerDemo(messages);
   }
 
   answerDemo(messages) {
@@ -119,7 +152,7 @@ export default class ChatDialog extends Component {
       });
     }, 1000);
   }
-
+ /*
   onReceive(text) {
     this.setState((previousState) => {
       return {
@@ -135,7 +168,7 @@ export default class ChatDialog extends Component {
         }),
       };
     });
-  }
+  } */
 
   renderBubble(props) {
     return (
